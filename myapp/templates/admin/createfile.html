@@ -1,0 +1,153 @@
+{% extends 'admin/adminlayout.html' %} {% block admin %}
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .text {
+    color: #7c8aa8;
+  }
+
+  .section-card {
+    background: #fff;
+    border: 1px solid #dbe7df;
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: 0 16px 36px rgba(8, 112, 58, 0.07);
+  }
+
+  .form {
+    height: 50px;
+    width: 510px;
+    {% comment %} border: 1px solid black; {% endcomment %}
+  }
+  .btn-main {
+    height: 44px;
+    border: 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1d4ed8, #102f76);
+    color: #fff;
+    font-weight: 800;
+    padding: 0 18px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-back{
+    border-radius: 9px;
+    background: #e7f4ec;
+    color: #1d4ed8;
+    font-weight: 800;
+    text-decoration: none;
+    padding: 8px 12px;
+  }
+</style>
+
+<div class="container-fluid px-4 mb-5">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="fw-bolder mt-4">Create File</h2>
+      <p class="text">Upload/update file and assign it to another employee</p>
+    </div>
+
+    <div class="col-12 mt-2">
+      <div class="section-card">
+        <h4 class="fw-bolder mb-4">File Information</h4>
+
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="row g-3">
+            {% for i in messages %}
+            <div class="alert alert-success" role="alert">
+              Create File Successfully.
+            </div>
+            {% endfor %}
+            <div class="col-sm-6">
+              <label for="Ename" class="fw-bold mb-2">File NO</label>
+              <input
+                type="text"
+                name="file_no"
+                class="form-control form"
+                id="Ename"
+                placeholder="Auto generate if blank"
+              />
+            </div>
+
+            <div class="col-sm-6">
+              <label for="Mname" class="fw-bold mb-2">Subject</label>
+              <input
+                type="text"
+                name="subject"
+                class="form-control form"
+                id="Mname"
+              />
+            </div>
+            <div class="col-sm-6">
+              <label for="priority" class="fw-bold mb-2">Priority</label>
+              <select name="priority" id="" class="form-control form">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Urgent">Urgent</option>
+              </select>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="Dname" class="fw-bold mb-2">Department</label>
+              <select name="department" id="Dname" class="form-control form">
+                <option value="">--Asign Deepartment--</option>
+                {% for i in dp %}
+                <option value="{{i.dep_name}}">{{i.dep_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-6">
+              <label for="move" class="fw-bold mb-2">Move / Assign To</label>
+              <select name="current_user" class="form-control form">
+                <option value="">--Assign User--</option>
+                {% for i in em %}
+                <option value="{{ i.username }}">{{ i.username }}</option>
+                {% endfor %} {% for i in ad %}
+                <option value="{{ i.username }}">
+                  {{ i.username }} (Admin)
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="attach" class="fw-bold mb-2">Attachment</label>
+              <input
+                type="file"
+                name="file"
+                class="form-control form"
+                id="attach"
+              />
+            </div>
+            <div class="col-sm-12">
+              <label for="text" class="fw-bold mb-2">Description</label><br />
+              <textarea
+                name="description"
+                rows="5"
+                cols="129"
+                class="form-control"
+                id="text"
+              ></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn-main mt-4">
+            <i class="fa-solid fa-floppy-disk me-2"></i>Save File
+          </button>
+          <a href="#" class="btn-back ms-2">Back</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

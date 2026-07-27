@@ -1,0 +1,130 @@
+{% extends 'user/userlayout.html' %} {% block user %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9">
+      <h4 class="bg-success p-2 text-light rounded-5 mt-4">
+        File Details - {{ab.file_no}}
+      </h4>
+      <table class="table table-bordered" style="border: 1px solid green">
+        <tr>
+          <th>Subject</th>
+          <td>{{ab.subject}}</td>
+        </tr>
+        <tr>
+          <th>Create User</th>
+          <td>{{ab.create_user}}</td>
+        </tr>
+
+        <tr>
+          <th>Current User</th>
+          <td>{{ab.current_user}}</td>
+        </tr>
+
+        <tr>
+          <th>Description</th>
+          <td>{{ab.description}}</td>
+        </tr>
+
+        <tr>
+          <th>Department</th>
+          <td>{{ab.department}}</td>
+        </tr>
+
+        <tr>
+          <th>FIle</th>
+          <td>
+            <a href="{{ab.file.url}}" class="text-dark">Click Here</a>
+          </td>
+        </tr>
+
+        <tr>
+          <th>Status</th>
+          <td><span class="badge bg-success">{{ab.status}}</span></td>
+        </tr>
+      </table>
+
+      <h4 class="bg-success p-2 text-light rounded-5">File Movement Status</h4>
+      <div class="row">
+        <div class="col-sm-12">
+          {% for i in fileh %}
+
+          <div class="card mb-2" style="padding: 20px; background-color: wheat">
+            <div class="row">
+              <div class="col-sm-6">File_no: {{i.File_no}}</div>
+              <div class="col-sm-6 text-end">{{i.create_at}}</div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <h5>From User :- {{i.current_user}} To {{i.forwarded_user}}</h5>
+                <p>Remark :- {{i.remark}}</p>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-3 mt-4">
+      <form method="post" class="border border-dark shadow p-3 rounded-1">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-12">
+            <h5>File Action</h5>
+            <p>Current User</p>
+            <input
+              type="text"
+              name="current_user"
+              id=""
+              value="{{ab.current_user}}"
+              class="form-control"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-sm-12">
+            <p>Move/Action</p>
+            <select name="action" id="" class="form-control">
+              <option value="">--Select--</option>
+              <option>forwarded</option>
+              <option>approve</option>
+              <option>reject</option>
+              <option>close</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-sm-12">
+            <p>All User</p>
+            <select name="forwarded_user" id="" class="form-control">
+              <option value="">--Select User--</option>
+              {% for i in ur %}
+
+              <option value="{{i.username}}">{{i.username}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-sm-12">
+            <p>Remark</p>
+            <textarea name="remark" id="" class="form-control"></textarea>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-sm-12">
+            <button class="btn bg-success form-control text-light">Move</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

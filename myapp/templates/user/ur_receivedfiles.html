@@ -1,0 +1,90 @@
+{% extends 'user/userlayout.html' %} {% block user %}
+
+<style>
+  .section-card {
+    background: #fff;
+    border: 1px solid #dbe7df;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .section-card2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .btn-main {
+    background: #08703a;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-top: -20px;
+  }
+
+  .table thead th {
+    background: #dfe6ef;
+    color: #08703a;
+    font-weight: 0;
+    font-size: 12px;
+  }
+
+  .para {
+    color: #7c8aa8;
+  }
+</style>
+
+<div class="container-fluid mt-4 mb-4">
+  <h3 class="fw-bold">Received Files</h3>
+  <div class="section-card2">
+    <p class="para">Open file, track movement and take action</p>
+    <a href="{% url 'ur_upload_files' %}" class="btn-main"> Create File </a>
+  </div>
+
+  <div class="section-card">
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle">
+        <thead class="text-center">
+          <tr>
+            <th>FILE NO</th>
+            <th>SUBJECT</th>
+            <th>ATTACHMENT</th>
+            <th>CREATED BY</th>
+            <th>CURRENT USER</th>
+            <th>STATUS</th>
+            <th>DATE</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+
+        <tbody class="text-center fs-6">
+          <tr>
+            {% for i in ab %}
+            <td>{{i.file_no}}</td>
+            <td>{{i.subject}}</td>
+            <td>
+              <img src="{{ i.file.url }}" alt="Image" width="60" height="30" />
+            </td>
+            <td>{{i.create_user}}</td>
+            <td>{{i.current_user}}</td>
+            <td>{{i.status}}</td>
+            <td>{{i.create_at}}</td>
+            <td>
+              <a href="{% url 'Details_file' i.file_no %}">
+                <button class="btn btn-success">Open</button>
+              </a>
+              
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

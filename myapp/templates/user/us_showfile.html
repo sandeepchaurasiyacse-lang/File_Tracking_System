@@ -1,0 +1,47 @@
+{% extends 'admin/adminlayout.html' %} 
+{% block user %}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-bordered mt-5">
+                <thead>
+                    <tr>
+                        <th>File No</th>
+                        <th>Subject</th>
+                        <th>Attechment</th>
+                        <th>Created By</th>
+                        <th>Current User</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in ab %}
+                    <tr>
+                        <td>{{i.file_no}}</td>
+                        <td>{{i.subject}}</td>
+                        <td>
+                            <img src="{{ i.file.url }}" alt="Image" width="60" height="30">
+                        </td>
+                        <td>{{i.create_user}}</td>
+                        <td>{{i.current_user}}</td>
+                        <td>{{i.status}}</td>
+                        <td>{{i.create_at}}</td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}

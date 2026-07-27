@@ -1,0 +1,163 @@
+{% extends 'admin/adminlayout.html' %} {% block admin %}
+<style>
+  .welcome-card {
+    background: linear-gradient(135deg, #1d4ed8, #102f76);
+    border-radius: 20px;
+    padding: 28px;
+    color: #fff;
+    margin-bottom: 24px;
+    margin-top: 30px;
+  }
+  .a {
+    height: 200px;
+    border-radius: 20px;
+  }
+  .file {
+    margin-top: 30px;
+    margin-left: 30px;
+    font-size: 25px;
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+    background-color: #e8efff;
+    color: #1d4ed8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .section-card {
+    background: #fff;
+    border: 1px solid #dbe7df;
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: 0 16px 36px rgba(8, 112, 58, 0.07);
+  }
+
+  .section-card2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 800;
+  }
+  .btn-main {
+    height: 44px;
+    border: 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #091985, #11158b);
+    color: #fff;
+    font-weight: 800;
+    padding: 0 18px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .table thead th {
+    background: #a9c7f6;
+    color: blue;
+  }
+  .forward {
+    background: #e2edff;
+    color: #2358a6;
+  }
+</style>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="welcome-card">
+        <h2>Welcome Admin, GGL Head Office</h2>
+        <p class="mb-0">
+          Manage complete file movement system from this dashboard.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white">
+        <div class="card-body">
+          <h5>Total Files</h5>
+          <h2>{{ total_files }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card bg-success text-white">
+        <div class="card-body">
+          <h5>Received Files</h5>
+          <h2>{{ received_files }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card bg-warning text-dark">
+        <div class="card-body">
+          <h5>Pending Files</h5>
+          <h2>{{ pending_files }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card bg-danger text-white">
+        <div class="card-body">
+          <h5>Rejected Files</h5>
+          <h2>{{ rejected_files }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="section-card mt-4 mb-4">
+        <div class="section-card2 mb-4">
+          <h4 class="fw-bolder">My Recent Movement</h4>
+
+          <a href="{% url 'allfile' %}" class="btn-main"> View My Files </a>
+        </div>
+
+        <div class="card">
+          <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+              <thead>
+                <tr>
+                  <th>File No</th>
+                  <th>Subject</th>
+                  <th>Created By</th>
+                  <th>Current User</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for r in recent %}
+                <tr>
+                  <td>{{ r.file_no }}</td>
+                  <td>{{ r.subject }}</td>
+                  <td>{{ r.from_user }}</td>
+                  <td>{{ r.to_user }}</td>
+                  <td>{{ r.action }}</td>
+                  <td>{{ r.date|date:"d M Y H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center">No Recent Movement</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

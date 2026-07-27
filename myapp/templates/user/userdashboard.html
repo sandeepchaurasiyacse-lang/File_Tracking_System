@@ -1,0 +1,179 @@
+{% extends 'user/userlayout.html' %} {% block user %}
+
+<style>
+  .welcome-card {
+    background: linear-gradient(135deg, #08703a, #034a24);
+    border-radius: 20px;
+    padding: 28px;
+    color: #fff;
+    margin-bottom: 24px;
+    margin-top: 30px;
+  }
+
+  .a {
+    height: 200px;
+    border-radius: 20px;
+  }
+
+  .file {
+    margin-top: 30px;
+    margin-left: 30px;
+    font-size: 25px;
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+    background-color: #e8efff;
+    color: #08703a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .section-card {
+    background: #fff;
+    border: 1px solid #dbe7df;
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: 0 16px 36px rgba(8, 112, 58, 0.07);
+  }
+
+  .section-card2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 800;
+  }
+
+  .btn-main {
+    height: 44px;
+    border: 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #08703a, #034a24);
+    color: #fff;
+    font-weight: 800;
+    padding: 0 18px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .table thead th {
+    background: #c5e4a8;
+    color: green;
+    font-size: 13px;
+  }
+  .forward {
+    background: #e2edff;
+    color: #2358a6;
+  }
+  tbody tr td {
+    font-size: 13px;
+  }
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="welcome-card">
+        <h2>Welcome User, {{ username }}</h2>
+        <p class="mb-0">
+          Upload files, update your file details, move files and track status.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+    <div class="col">
+      <div class="card a">
+        <i class="fa-solid fa-folder-open file"></i>
+        <div class="card-body">
+          <h3 class="card-title ms-3">{{ my_files }}</h3>
+          <p class="card-text ms-3">My Files</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card a">
+        <i class="fa-solid fa-clipboard file"></i>
+        <div class="card-body">
+          <h3 class="card-title ms-3">{{ received_files }}</h3>
+          <p class="card-text ms-3">Received Files</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card a">
+        <i class="fa-solid fa-paper-plane file"></i>
+        <div class="card-body">
+          <h3 class="card-title ms-3">{{ sent_files }}</h3>
+          <p class="card-text ms-3">Sent Files</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card a">
+        <i class="fa-solid fa-clock file"></i>
+        <div class="card-body">
+          <h3 class="card-title ms-3">{{ pending_files }}</h3>
+          <p class="card-text ms-3">Pending Files</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4 mb-4">
+    <div class="col-12">
+      <div class="section-card">
+        <div class="section-card2 mb-4">
+          <h4 class="fw-bolder">My Recent Movement</h4>
+
+          <a href="#" class="btn-main"> View My Files </a>
+        </div>
+
+        <div class="card">
+          <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+              <thead>
+                <tr>
+                  <th>FILE NO</th>
+                  <th>SUBJECT</th>
+                  <th>FROM</th>
+                  <th>TO</th>
+                  <th>ACTION</th>
+                  <th>DATE</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for i in recent %}
+                <tr>
+                  <td>{{ i.file_no }}</td>
+                  <td>{{ i.subject }}</td>
+                  <td>{{ i.from_user }}</td>
+                  <td>{{ i.to_user }}</td>
+                  <td>
+                    <span class="badge bg-success">{{ i.action }}</span>
+                  </td>
+                  <td>{{ i.date }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center">
+                    No Recent File Movement
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'admin/adminlayout.html' %} {% block admin %}
+
+<style>
+  .section-card {
+    background: #fff;
+    border: 1px solid #dbe7df;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .section-card2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .btn-main {
+    background: #0e16af;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-top: -20px;
+  }
+  .main {
+    background: #0e16af;
+    color: #fff;
+    text-decoration: none;
+    padding: 2px 4px;
+    border-radius: 8px;
+    font-weight: 600;
+    
+  }
+
+  .main:hover {
+    background: #0e16af;
+    color: #fff;
+  }
+
+  .table thead th {
+    background: #dfe6ef;
+    color: #3841e3;
+    font-weight: 0;
+    font-size: 12px;
+  }
+
+  .forward {
+    background: #e2edff;
+    color: #2257a7;
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .para {
+    color: #7c8aa8;
+  }
+</style>
+
+<div class="container-fluid mt-4 mb-4">
+  <h3 class="fw-bold">All Files</h3>
+  <div class="section-card2">
+    <p class="para">Open file, track movement and take action</p>
+    <a href="{% url 'createfile' %}" class="btn-main"> Create File </a>
+  </div>
+
+  <div class="section-card">
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle">
+        <thead class="text-center">
+          <tr>
+            <th>FILE NO</th>
+            <th>SUBJECT</th>
+            <th>ATTACHMENT</th>
+            <th>CREATED BY</th>
+            <th>CURRENT USER</th>
+            <th>STATUS</th>
+            <th>DATE</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+
+        <tbody class="text-center fs-6">
+          {% for i in ab %}
+          <tr>
+            <td>{{i.file_no}}</td>
+            <td>{{i.subject}}</td>
+            <td>
+              <a href="{{i.file.url}}" class="text-primary">Click Here</a>
+            </td>
+            <td>{{i.create_user}}</td>
+            <td>{{i.current_user}}</td>
+            <td>{{i.status}}</td>
+            <td>{{i.create_at}}</td>
+            <td>
+              <a href="{% url 'ad_Details_file' i.file_no %}" class="main">
+                Open
+              </a>
+              <small class="badge bg-success">View Only</small>
+              <a href="{% url 'edit_file' i.file_no %}" class="main">Edit</a>
+              <a
+                href="{% url 'delete_file' i.file_no %}"
+                class="main"
+                onclick="
+                  return confirm('Are you sure you want to delete this file?');
+                "
+              >
+                Delete
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="8">No Files Found</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

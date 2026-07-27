@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Green Gas Limited | File Movement Systm</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        font-family: "Rubik", sans-serif;
+        background: #eef4ff;
+        
+      }
+
+      a {
+        text-decoration: none;
+        color: white;
+      }
+
+      .box1 {
+        background: linear-gradient(135deg, #1d4ed8, #102f76);
+        padding: 24px 20px;
+        color: #fff;
+      }
+
+      .box1 img {
+        width: 92px;
+        background: #fff;
+        padding: 8px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+      }
+
+      .box1 h5 {
+        font-weight: 900;
+        margin: 0;
+      }
+
+      .box2 {
+        padding: 18px 14px;
+        background-color: white;
+      }
+
+      .menu-title {
+        font-size: 11px;
+        text-transform: uppercase;
+        font-weight: 900;
+        color: #7c8aa8;
+        margin: 18px 10px 10px;
+      }
+
+      .box2 a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 14px;
+        text-decoration: none;
+        color: #21365f;
+        border-radius: 12px;
+        margin-bottom: 6px;
+        font-size: 14px;
+        font-weight: 700;
+        transition: 0.25s;
+      }
+
+      .box2 a i {
+        width: 20px;
+        color: #1d4ed8;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+      }
+
+      .s {
+        padding: 24px;
+        min-height: 100vh;
+      }
+      .topbar {
+            background: linear-gradient(135deg, #1d4ed8, #102f76);
+
+        }
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #fff;
+            color: #1d4ed8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+        .office{
+            color:#bfdbfe;
+        }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-2 sidebar p-0">
+          <div class="box1">
+            <img
+              src="https://gglengage.com/images/ggllogo.png"
+              alt=""
+            />
+
+            <h5>GGL Admin</h5>
+            <small>Administration Dashboard</small>
+          </div>
+
+          <div class="box2">
+            <div class="menu-title">Main</div>
+
+            <a href="{% url 'dashboard' %}">
+              <i class="fa-solid fa-gauge-high"></i>
+              Admin Dashboard
+            </a>
+
+            <div class="menu-title">File Management</div>
+
+            <a href="{% url 'createfile' %}">
+              <i class="fa-solid fa-file-circle-plus"></i>
+              Create File
+            </a>
+
+            <a href="{% url 'receivedfile' %}">
+              <i class="fa-solid fa-clipboard"></i>
+              Received Files
+            </a>
+
+            <a href="{% url 'sentfiles' %}">
+              <i class="fa-solid fa-paper-plane"></i>
+              Sent Files
+            </a>
+
+            <a href="{% url 'pendingfiles' %}">
+              <i class="fa-solid fa-clock"></i>
+              Pending Files
+            </a>
+
+            <a href="{% url 'allfile' %}">
+              <i class="fa-solid fa-folder-open"></i>
+              All Files
+            </a>
+
+            <a href="{% url 'filetrack' %}">
+              <i class="fa-solid fa-magnifying-glass-location"></i>
+              File Track
+            </a>
+
+            <div class="menu-title">Administration</div>
+
+            <a href="{% url 'empadd' %}">
+              <i class="fa-solid fa-user-plus"></i>
+              Add Employee
+            </a>
+
+            <a href="{% url 'manageemp' %}">
+              <i class="fa-solid fa-users"></i>
+              Manage Employees
+            </a>
+
+            <a href="{% url 'adddep' %}">
+              <i class="fa-solid fa-building"></i>
+              Add Department
+            </a>
+
+            <a href="{% url 'managedep' %}">
+              <i class="fa-solid fa-building-user"></i>
+              Manage Departments
+            </a>
+
+            <div class="menu-title">Account</div>
+
+            <a href="{% url 'userlogout' %}">
+            <i class="fa-solid fa-right-from-bracket"></i>
+           Logout
+          </a>
+          </div>
+        </div>
+
+        <div class="col-sm-10 s p-0">
+         <div class="px-0">
+              <div class="topbar d-flex align-items-center justify-content-between ">
+
+                        
+                        <h2 class="mb-0 text-white fw-bolder ms-4 ">Admin Panel</h2>
+
+                       
+                        <div class="d-flex align-items-center">
+
+                            <div class="text-end me-3 mt-3 mb-3">
+                                <h5 class="office mb-0 fw-bolder">GGL Head Office</h5>
+                                <small class="admin-text fw-bold text-white">Administrator</small>
+                            </div>
+
+                            <div class="avatar me-4">
+                                G
+                            </div>
+
+                        </div>
+                        
+         </div>
+          {% block admin %}
+
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

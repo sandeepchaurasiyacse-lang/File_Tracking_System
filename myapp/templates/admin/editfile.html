@@ -1,0 +1,119 @@
+{% extends 'admin/adminlayout.html' %} {% block admin %}
+
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h4>Edit File</h4>
+    </div>
+
+    <div class="card-body">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label>File No</label>
+          <input
+            type="text"
+            class="form-control"
+            value="{{ obj.file_no }}"
+            readonly
+          />
+        </div>
+
+        <div class="mb-3">
+          <label>Subject</label>
+          <input
+            type="text"
+            name="subject"
+            class="form-control"
+            value="{{ obj.subject }}"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label>Priority</label>
+          <select name="priority" class="form-control">
+            <option
+              value="Low"
+              {%
+              if
+              obj.priority=""
+              ="Low"
+              %}selected{%
+              endif
+              %}
+            >
+              Low
+            </option>
+
+            <option
+              value="Medium"
+              {%
+              if
+              obj.priority=""
+              ="Medium"
+              %}selected{%
+              endif
+              %}
+            >
+              Medium
+            </option>
+
+            <option
+              value="High"
+              {%
+              if
+              obj.priority=""
+              ="High"
+              %}selected{%
+              endif
+              %}
+            >
+              High
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label>Department</label>
+          <input
+            type="text"
+            name="department"
+            value="{{ obj.department }}"
+            class="form-control"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label>Description</label>
+          <textarea name="description" class="form-control" rows="4">
+{{ obj.description }}</textarea
+          >
+        </div>
+
+        <div class="mb-3">
+          <label>Current File</label>
+
+          <br />
+
+          {% if obj.file %}
+          <a href="{{ obj.file.url }}" target="_blank"> View Uploaded File </a>
+          {% else %}
+          <span class="text-danger">No File Uploaded</span>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label>Upload New File</label>
+          <input type="file" name="file" class="form-control" />
+        </div>
+
+        <button class="btn btn-success">Update File</button>
+
+        <a href="{% url 'sentfiles' %}" class="btn btn-secondary"> Back </a>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

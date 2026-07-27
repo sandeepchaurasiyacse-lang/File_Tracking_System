@@ -1,0 +1,126 @@
+{% extends 'user/userlayout.html' %} {% block user %}
+
+<style>
+  .section-card {
+    background: #fff;
+    border: 1px solid #dbe7df;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .section-card2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .section-card3 {
+   background:#fff;
+    border:1px solid #dbe7df;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+  }
+
+  .btn-main {
+    background: #08703a;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-top: -20px;
+  }
+
+    .form-control{
+    height:50px;
+
+  }
+  .main2 {
+    background:#08703a;
+    color:#fff;
+    text-decoration:none;
+    padding:12px;
+    border-radius:8px;
+    font-weight:600;
+
+  }
+  .table thead th {
+    background: #dfe6ef;
+    color: #08703a;
+    font-weight: 0;
+    font-size: 12px;
+  }
+
+  .para {
+    color: #7c8aa8;
+  }
+  .text {
+    font-weight: 700;
+    font-size: 22px;
+  }
+  .form {
+    height: 50px;
+    width: 870px;
+    {% comment %} border: 1px solid black; {% endcomment %}
+  }
+</style>
+
+<div class="container-fluid mt-4 mb-4">
+  <h3 class="fw-bold">File Track</h3>
+  <div class="section-card2">
+    <p class="para">
+      File number, subject, sender or receiver name se file track karein.
+    </p>
+    <a href="#" class="btn-main"> Create File </a>
+  </div>
+  <div class="section-card3 mb-4">
+    <div class="row align-items-end w-100">
+      <div class="col-md-10">
+        <label class="fw-bold mb-2">Search File</label>
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter file no, subject, sender or receiver name"
+        />
+      </div>
+
+      <div class="col-md-2">
+        <a href="#" class="main2 d-block text-center">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          Track File
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle">
+        <h4 class="text mb-4">Tracking Result</h4>
+        <thead class="text-center">
+          <tr>
+            <th>FILE NO</th>
+            <th>SUBJECT</th>
+            <th>CREATED BY</th>
+            <th>CURRENT USER</th>
+            <th>STATUS</th>
+            <th>ATTACHMENT</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+
+        <tbody class="text-center fs-6">
+          
+          <tr>
+            <td>Search karke file track karein</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,174 @@
+{% extends 'admin/adminlayout.html' %} {% block admin %}
+
+<style>
+  .section-card {
+    background: #fff;
+    border: 1px solid #dbe7df;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .section-card2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .section-card3 {
+   background:#fff;
+    border:1px solid #dbe7df;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+  }
+
+  .btn-main {
+    background: #0e16af;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-top: -20px;
+  }
+
+    .form-control{
+    height:50px;
+
+  }
+  .main2 {
+    background:#0e16af;
+    color:#fff;
+    text-decoration:none;
+    padding:12px;
+    border-radius:8px;
+    font-weight:600;
+
+  }
+  .main {
+    background: #0e16af;
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .btn-main:hover {
+    background: #0e16af;
+    color: #fff;
+  }
+
+  .table thead th {
+    background: #dfe6ef;
+    color: #3841e3;
+    font-weight: 0;
+    font-size: 12px;
+  }
+
+  .forward {
+    background: #e2edff;
+    color: #2257a7;
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .para {
+    color: #7c8aa8;
+  }
+  .text {
+    font-weight: 700;
+    font-size: 22px;
+  }
+  .form {
+    height: 50px;
+    width: 870px;
+    {% comment %} border: 1px solid black; {% endcomment %}
+  }
+</style>
+
+<div class="container-fluid mt-4 mb-4">
+  <h3 class="fw-bold">File Track</h3>
+  <div class="section-card2">
+    <p class="para">
+      File number, subject, sender or receiver name se file track karein.
+    </p>
+    <a href="{% url "createfile" %}" class="btn-main"> Create File </a>
+  </div>
+  <div class="section-card3 mb-4">
+    <form method="GET">
+        <div class="row align-items-end w-100">
+
+            <div class="col-md-10">
+                <label class="fw-bold mb-2">Search File</label>
+
+                <input
+                    type="text"
+                    name="search"
+                    class="form-control"
+                    placeholder="Enter File Number / Subject / User"
+                    value="{{ request.GET.search }}"
+                >
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="main2 border-0 w-100">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Track File
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+  <div class="section-card">
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle">
+        <h4 class="text mb-4">Tracking Result</h4>
+        <thead class="text-center">
+          <tr>
+            <th>FILE NO</th>
+            <th>SUBJECT</th>
+
+            <th>CREATED BY</th>
+            <th>CURRENT USER</th>
+            <th>STATUS</th>
+
+            <th>ACTION</th>
+          </tr>
+        </thead>
+
+        <tbody class="text-center">
+          {% for i in ab %}
+
+          <tr>
+            <td>{{ i.file_no }}</td>
+            <td>{{ i.subject }}</td>
+            <td>{{ i.create_user }}</td>
+            <td>{{ i.current_user }}</td>
+            <td>{{ i.status }}</td>
+            <td>
+              <a href="{% url 'ad_Details_file' i.file_no %}" class="main">
+                Open
+              </a>
+            </td>
+          </tr>
+
+          {% empty %}
+
+          <tr>
+            <td colspan="6" class="text-center text-danger">No File Found</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

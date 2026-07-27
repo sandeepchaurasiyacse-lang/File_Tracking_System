@@ -1,0 +1,149 @@
+{% extends 'admin/adminlayout.html' %} 
+
+{% block admin %}
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .text {
+    color: #7c8aa8;
+  }
+
+  .section-card {
+    background: #fff;
+    border: 1px solid #dbe7df;
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: 0 16px 36px rgba(8, 112, 58, 0.07);
+  }
+
+  .form {
+    height: 50px;
+    width: 510px;
+    {% comment %} border: 1px solid black; {% endcomment %}
+  }
+  .btn-main {
+    height: 44px;
+    border: 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1d4ed8, #102f76);
+    color: #fff;
+    font-weight: 800;
+    padding: 0 18px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-back{
+    border-radius: 9px;
+    background: #e7f4ec;
+    color: #1d4ed8;
+    font-weight: 800;
+    text-decoration: none;
+    padding: 8px 12px;
+  }
+
+  .dep{
+    overflow-y:scroll;
+  }
+</style>
+
+<div class="container-fluid px-4 mb-5">
+  <div class="row">
+    <div class="col-12 ">
+      <h2 class="fw-bolder mt-4">Add Department</h2>
+      <p class="text">Create or update department details</p>
+    </div>
+
+    <div class="col-12 mt-2 dep">
+      <div class="section-card">
+        <h4 class="fw-bolder mb-4">Department Information</h4>
+        {% for i in messages %}
+        <div class="alert alert-success">{{ i }}</div>
+        {% endfor %}
+        <form action="{% url 'dep_save' %}" method="post">
+          {% csrf_token %}
+
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="Ename" class="fw-bold mb-2">Department Name</label>
+              <input
+                type="text"
+                name="dep_name"
+                class="form-control form"
+                id="Ename"
+              />
+            </div>
+
+            <div class="col-sm-6">
+              <label for="Mname" class="fw-bold mb-2">Department Code</label>
+              <input
+                type="text"
+                name="dep_code"
+                class="form-control form"
+                id="Mname"
+              />
+            </div>
+            <div class="col-sm-6">
+              <label for="priority" class="fw-bold mb-2">Department Head</label>
+              <input
+                type="text"
+                name="dep_head"
+                class="form-control form"
+                id="priority"
+              />
+            </div>
+
+            <div class="col-sm-6">
+              <label for="attach1" class="fw-bold mb-2">Status</label>
+              <select name="status" id="attach1" class="form-control form">
+                <option value="Admin">Admin</option>
+                <option value="User">User</option>
+              </select>
+            </div>
+            <div class="col-sm-6">
+              <label for="move" class="fw-bold mb-2">Department Email</label>
+              <input
+                type="email"
+                name="dep_email"
+                class="form-control form"
+                id="move"
+              />
+            </div>
+            <div class="col-sm-6">
+              <label for="phot" class="fw-bold mb-2">Contact Number</label
+              ><br />
+              <input
+                type="tel"
+                name="dep_number"
+                class="form-control form"
+                id="phot"
+              />
+            </div>
+            <div class="col-sm-12">
+              <label for="text3" class="fw-bold mb-2">Description</label><br />
+              <textarea
+                name="description"
+                rows="4"
+                cols="129"
+                class="form-control"
+                id="text3"
+              ></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn-main mt-4">
+            <i class="fa-solid fa-floppy-disk me-2"></i>Save Department
+          </button>
+          <a href="#" class="btn-back ms-2">Back</a>
+        </form>
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</div>
