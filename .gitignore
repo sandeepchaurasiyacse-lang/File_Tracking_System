@@ -1,17 +1,31 @@
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
 *.pyd
 
-# Django
+# Django / app data
+.db.sqlite3
+sqlite3
+*.sqlite3
 db.sqlite3
 media/
+media/profile/
+media/upload_file/
 
 # VS Code
 .vscode/
+Configure Default Formatter
 
 # Environment
 .env
+.env.*
 venv/
 env/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local generated files
+*.log
