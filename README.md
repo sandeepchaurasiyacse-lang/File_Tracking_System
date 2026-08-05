@@ -39,3 +39,6 @@ The release and maintenance checklist is available in [docs/deployment.md](docs/
 ## Troubleshooting
 
 Common issues and diagnostic steps are documented in [docs/troubleshooting.md](docs/troubleshooting.md).
+## Roadmap
+
+The project roadmap and release notes are tracked in [docs/roadmap.md](docs/roadmap.md).
