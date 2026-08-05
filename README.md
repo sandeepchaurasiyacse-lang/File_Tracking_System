@@ -21,3 +21,6 @@ See [docs/setup.md](docs/setup.md) for the development environment steps and val
 ## Environment configuration
 
 The project should be configured with a local environment file before running in a development or staging context. See [docs/environment.md](docs/environment.md).
+## File tracking workflow
+
+The operational flow for uploaded records is described in [docs/file-workflow.md](docs/file-workflow.md).
