@@ -24,3 +24,6 @@ The project should be configured with a local environment file before running in
 ## File tracking workflow
 
 The operational flow for uploaded records is described in [docs/file-workflow.md](docs/file-workflow.md).
+## Employee and department structure
+
+Core model relationships are outlined in [docs/employee-department.md](docs/employee-department.md).
