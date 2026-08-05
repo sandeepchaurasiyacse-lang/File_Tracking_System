@@ -18,3 +18,6 @@ The project is under active development and is being prepared for feature comple
 ## Local setup
 
 See [docs/setup.md](docs/setup.md) for the development environment steps and validation commands.
+## Environment configuration
+
+The project should be configured with a local environment file before running in a development or staging context. See [docs/environment.md](docs/environment.md).
