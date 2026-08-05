@@ -15,3 +15,6 @@ This Django project manages employee records, department metadata, authenticatio
 
 ## Status
 The project is under active development and is being prepared for feature completion and operational review.
+## Local setup
+
+See [docs/setup.md](docs/setup.md) for the development environment steps and validation commands.
