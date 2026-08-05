@@ -30,3 +30,6 @@ Core model relationships are outlined in [docs/employee-department.md](docs/empl
 ## Admin guidance
 
 Operational and administrative expectations are described in [docs/admin.md](docs/admin.md).
+## Validation flow
+
+Test and validation guidance lives in [docs/testing.md](docs/testing.md).
