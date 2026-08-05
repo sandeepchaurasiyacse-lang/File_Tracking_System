@@ -33,3 +33,6 @@ Operational and administrative expectations are described in [docs/admin.md](doc
 ## Validation flow
 
 Test and validation guidance lives in [docs/testing.md](docs/testing.md).
+## Release checklist
+
+The release and maintenance checklist is available in [docs/deployment.md](docs/deployment.md).
