@@ -36,3 +36,6 @@ Test and validation guidance lives in [docs/testing.md](docs/testing.md).
 ## Release checklist
 
 The release and maintenance checklist is available in [docs/deployment.md](docs/deployment.md).
+## Troubleshooting
+
+Common issues and diagnostic steps are documented in [docs/troubleshooting.md](docs/troubleshooting.md).
