@@ -27,3 +27,6 @@ The operational flow for uploaded records is described in [docs/file-workflow.md
 ## Employee and department structure
 
 Core model relationships are outlined in [docs/employee-department.md](docs/employee-department.md).
+## Admin guidance
+
+Operational and administrative expectations are described in [docs/admin.md](docs/admin.md).
