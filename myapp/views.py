@@ -19,17 +19,17 @@ def Adminlogin(request):
 
 def loginsave(request):
     if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
         remember = request.POST.get('remember')
-        user = login.objects.filter(username=username, password=password).first()
+        user = login.objects.filter(username__iexact=username, password=password).first()
         if user:
             if user.role and (user.role.lower() == 'admin'):
-                request.session['adminid'] = username
+                request.session['adminid'] = user.username
                 response = redirect('dashboard')
                 if remember:
                     request.session.set_expiry(1209600)
-                    response.set_cookie('remember_admin', username, max_age=1209600)
+                    response.set_cookie('remember_admin', user.username, max_age=1209600)
                 else:
                     request.session.set_expiry(0)
                     response.delete_cookie('remember_admin')
@@ -428,10 +428,10 @@ def userlogin(request):
 
 def userlogcode(request):
     if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
         remember = request.POST.get('remember')
-        user = addemp.objects.filter(username=username, password=password).first()
+        user = addemp.objects.filter(Q(username__iexact=username) | Q(email__iexact=username), password=password).first()
         if user:
             if user.status and user.status.lower() == "active":
                 request.session['userid'] = user.username
@@ -440,7 +440,7 @@ def userlogcode(request):
                 response = redirect('userdashboard')
                 if remember:
                     request.session.set_expiry(1209600)
-                    response.set_cookie('remember_user', username, max_age=1209600)
+                    response.set_cookie('remember_user', user.username, max_age=1209600)
                 else:
                     request.session.set_expiry(0)
                     response.delete_cookie('remember_user')
