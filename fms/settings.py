@@ -126,7 +126,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = 'somyavarshney2003@gmail.com'
-EMAIL_HOST_PASSWORD = 'qmrv sofr wosf opxt'
+EMAIL_HOST_USER = 'chaurasiyasandeep05991@gmail.com'
+EMAIL_HOST_PASSWORD = 'unls qmvv dhwr bzom'
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
