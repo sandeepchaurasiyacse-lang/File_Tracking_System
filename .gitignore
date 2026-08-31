@@ -8,8 +8,11 @@ __pycache__/
 db.sqlite3
 media/
 
-# VS Code
+# IDE & OS
 .vscode/
+.idea/
+Configure Default Formatter
+*.DS_Store
 
 # Environment
 .env

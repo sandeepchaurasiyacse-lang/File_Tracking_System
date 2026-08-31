@@ -1,0 +1,63 @@
+{% extends 'admin/adminlayout.html' %}
+{% block admin %}
+<div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Show Employee</h3>
+                <p>Lorem ipsum dolor sit amet.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-border">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>User Name</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Emp_ID</th>
+                                <th>Department</th>
+                                <th>Designation</th>
+                                <th>Static Role</th>
+                                <th>Status</th>
+                                <th>Photo</th>
+                                <th>Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in bc %}
+                            <tr>
+                                <td>{{i.name}}</td>
+                                <td>{{i.username}}</td>
+                                <td>{{i.email}}</td>
+                                <td>{{i.mobile}}</td>
+                                <td>{{i.emp_id}}</td>
+                                <td>{{i.department}}</td>
+                                <td>{{i.disignation}}</td>
+                                <td>{{i.role}}</td>
+                                <td>{{i.status}}</td>
+                                <td>
+                                    {% if i.photo %}
+                                    <img src="{{i.photo.url}}" alt="" width="60" height="60" class="rounded">
+                                    {% else %}
+                                    <span class="text-muted">No Photo</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{i.address}}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="11" class="text-center text-muted">No Employees Found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

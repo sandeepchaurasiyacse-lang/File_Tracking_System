@@ -1,0 +1,55 @@
+{% extends 'admin/adminlayout.html' %} 
+{% block admin %}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th>File No</th>
+                            <th>Subject</th>
+                            <th>Attachment</th>
+                            <th>Created By</th>
+                            <th>Current User</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in ab %}
+                        <tr>
+                            <td>{{i.file_no}}</td>
+                            <td>{{i.subject}}</td>
+                            <td>
+                                {% if i.file %}
+                                <a href="{{ i.file.url }}" target="_blank" class="text-primary">Click Here</a>
+                                {% else %}
+                                <span class="text-muted">No File</span>
+                                {% endif %}
+                            </td>
+                            <td>{{i.create_user}}</td>
+                            <td>{{i.current_user}}</td>
+                            <td>{{i.status}}</td>
+                            <td>{{i.create_at}}</td>
+                            <td>
+                                <a href="{% url 'ad_Details_file' i.file_no %}">
+                                    <button class="btn btn-primary btn-sm">Open</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted">No Files Found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
