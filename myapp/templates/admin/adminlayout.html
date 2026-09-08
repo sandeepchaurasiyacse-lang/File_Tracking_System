@@ -102,15 +102,58 @@
         transform: scale(1.15);
       }
 
-      .sidebar {
-        position: sticky;
-        top: 0;
-        height: 100vh;
-        overflow-y: auto;
+      @media (min-width: 992px) {
+        .sidebar {
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          overflow-y: auto;
+          display: block !important;
+        }
+      }
+
+      @media (max-width: 991.98px) {
+        .sidebar {
+          width: 280px !important;
+          max-width: 85vw !important;
+          height: 100vh !important;
+          z-index: 1045 !important;
+          background: #fff;
+        }
+        .topbar-title {
+          font-size: 1.25rem !important;
+        }
+        .avatar {
+          width: 36px !important;
+          height: 36px !important;
+          font-size: 14px !important;
+        }
+        .section-card, .section-card3 {
+          padding: 16px 14px !important;
+          border-radius: 14px !important;
+        }
+        .section-card2 {
+          flex-direction: column !important;
+          align-items: stretch !important;
+          gap: 10px !important;
+          margin-bottom: 15px !important;
+        }
+        .btn-main {
+          margin-top: 0 !important;
+          width: 100% !important;
+          text-align: center !important;
+        }
+        .welcome-card {
+          padding: 18px 14px !important;
+          margin-top: 15px !important;
+          border-radius: 14px !important;
+        }
+        .welcome-card h2 {
+          font-size: 1.35rem !important;
+        }
       }
 
       .s {
-        padding: 24px;
         min-height: 100vh;
       }
       .topbar {
@@ -172,15 +215,18 @@
   <body>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-2 sidebar p-0">
-          <div class="box1">
-            <img
-              src="https://gglengage.com/images/ggllogo.png"
-              alt=""
-            />
-
-            <h5>GGL Admin</h5>
-            <small>Administration Dashboard</small>
+        <!-- Sidebar with Bootstrap 5 offcanvas-lg for mobile/tablet drawer -->
+        <div class="offcanvas-lg offcanvas-start sidebar col-lg-2 p-0" tabindex="-1" id="adminSidebar" aria-labelledby="adminSidebarLabel">
+          <div class="box1 d-flex justify-content-between align-items-center d-lg-block">
+            <div>
+              <img
+                src="https://gglengage.com/images/ggllogo.png"
+                alt="GGL"
+              />
+              <h5>GGL Admin</h5>
+              <small>Administration Dashboard</small>
+            </div>
+            <button type="button" class="btn-close btn-close-white d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#adminSidebar" aria-label="Close"></button>
           </div>
 
           <div class="box2">
@@ -248,37 +294,38 @@
             <div class="menu-title">Account</div>
 
             <a href="{% url 'adminlogout' %}">
-            <i class="fa-solid fa-right-from-bracket"></i>
-           Logout
-          </a>
+              <i class="fa-solid fa-right-from-bracket"></i>
+              Logout
+            </a>
           </div>
         </div>
 
-        <div class="col-sm-10 s p-0">
-         <div class="px-0">
-              <div class="topbar d-flex align-items-center justify-content-between ">
+        <!-- Main Content -->
+        <div class="col-12 col-lg-10 s p-0">
+          <div class="px-0">
+            <div class="topbar d-flex align-items-center justify-content-between px-3 py-2">
+              <!-- Left -->
+              <div class="d-flex align-items-center">
+                <button class="btn text-white d-lg-none me-2 p-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebar" aria-controls="adminSidebar">
+                  <i class="fa-solid fa-bars fs-5"></i>
+                </button>
+                <h2 class="mb-0 text-white fw-bolder topbar-title">Admin Panel</h2>
+              </div>
 
-                        
-                        <h2 class="mb-0 text-white fw-bolder ms-4 ">Admin Panel</h2>
+              <!-- Right -->
+              <div class="d-flex align-items-center">
+                <div class="text-end me-2 me-md-3">
+                  <h6 class="office mb-0 fw-bolder d-none d-sm-block">GGL Head Office</h6>
+                  <small class="admin-text fw-bold text-white">Administrator</small>
+                </div>
 
-                       
-                        <div class="d-flex align-items-center">
+                <div class="avatar">G</div>
+              </div>
+            </div>
+            {% block admin %}
 
-                            <div class="text-end me-3 mt-3 mb-3">
-                                <h5 class="office mb-0 fw-bolder">GGL Head Office</h5>
-                                <small class="admin-text fw-bold text-white">Administrator</small>
-                            </div>
-
-                            <div class="avatar me-4">
-                                G
-                            </div>
-
-                        </div>
-                        
-         </div>
-          {% block admin %}
-
-          {% endblock %}
+            {% endblock %}
+          </div>
         </div>
       </div>
     </div>

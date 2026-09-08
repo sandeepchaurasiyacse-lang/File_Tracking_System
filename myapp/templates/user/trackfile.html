@@ -41,10 +41,14 @@
     background:#08703a;
     color:#fff;
     text-decoration:none;
-    padding:12px;
+    padding:10px 16px;
     border-radius:8px;
     font-weight:600;
-
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
   .table thead th {
     background: #dfe6ef;
@@ -61,24 +65,23 @@
     font-size: 22px;
   }
   .form {
-    height: 50px;
-    width: 870px;
-    {% comment %} border: 1px solid black; {% endcomment %}
+    height: 48px;
+    width: 100%;
   }
 </style>
 
-<div class="container-fluid mt-4 mb-4">
+<div class="container-fluid px-3 px-md-4 mt-4 mb-4">
   <h3 class="fw-bold">File Track</h3>
   <div class="section-card2">
-    <p class="para">
+    <p class="para mb-0">
       File number, subject, sender or receiver name se file track karein.
     </p>
     <a href="{% url 'ur_upload_files' %}" class="btn-main"> Create File </a>
   </div>
   <div class="section-card3 mb-4">
     <form method="GET">
-      <div class="row align-items-end w-100">
-        <div class="col-md-10">
+      <div class="row g-2 align-items-end">
+        <div class="col-12 col-md-9 col-lg-10">
           <label class="fw-bold mb-2">Search File</label>
           <input
             type="text"
@@ -89,9 +92,9 @@
           />
         </div>
 
-        <div class="col-md-2">
-          <button type="submit" class="main2 border-0 w-100 d-block text-center">
-            <i class="fa-solid fa-magnifying-glass"></i>
+        <div class="col-12 col-md-3 col-lg-2">
+          <button type="submit" class="main2 border-0 w-100 d-inline-flex align-items-center justify-content-center">
+            <i class="fa-solid fa-magnifying-glass me-1"></i>
             Track File
           </button>
         </div>

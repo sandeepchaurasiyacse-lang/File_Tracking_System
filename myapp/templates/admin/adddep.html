@@ -23,9 +23,8 @@
   }
 
   .form {
-    height: 50px;
-    width: 510px;
-    {% comment %} border: 1px solid black; {% endcomment %}
+    height: 46px;
+    width: 100%;
   }
   .btn-main {
     height: 44px;
@@ -48,20 +47,16 @@
     text-decoration: none;
     padding: 8px 12px;
   }
-
-  .dep{
-    overflow-y:scroll;
-  }
 </style>
 
-<div class="container-fluid px-4 mb-5">
+<div class="container-fluid px-3 px-md-4 mb-5">
   <div class="row">
-    <div class="col-12 ">
+    <div class="col-12">
       <h2 class="fw-bolder mt-4">Add Department</h2>
       <p class="text">Create or update department details</p>
     </div>
 
-    <div class="col-12 mt-2 dep">
+    <div class="col-12 mt-2">
       <div class="section-card">
         <h4 class="fw-bolder mb-4">Department Information</h4>
         {% for i in messages %}
@@ -71,7 +66,7 @@
           {% csrf_token %}
 
           <div class="row g-3">
-            <div class="col-sm-6">
+            <div class="col-12 col-md-6">
               <label for="Ename" class="fw-bold mb-2">Department Name</label>
               <input
                 type="text"
@@ -81,7 +76,7 @@
               />
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-12 col-md-6">
               <label for="Mname" class="fw-bold mb-2">Department Code</label>
               <input
                 type="text"
@@ -90,7 +85,7 @@
                 id="Mname"
               />
             </div>
-            <div class="col-sm-6">
+            <div class="col-12 col-md-6">
               <label for="priority" class="fw-bold mb-2">Department Head</label>
               <input
                 type="text"
@@ -100,14 +95,14 @@
               />
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-12 col-md-6">
               <label for="attach1" class="fw-bold mb-2">Status</label>
               <select name="status" id="attach1" class="form-control form">
-                <option value="Admin">Admin</option>
-                <option value="User">User</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
               </select>
             </div>
-            <div class="col-sm-6">
+            <div class="col-12 col-md-6">
               <label for="move" class="fw-bold mb-2">Department Email</label>
               <input
                 type="email"
@@ -116,9 +111,8 @@
                 id="move"
               />
             </div>
-            <div class="col-sm-6">
-              <label for="phot" class="fw-bold mb-2">Contact Number</label
-              ><br />
+            <div class="col-12 col-md-6">
+              <label for="phot" class="fw-bold mb-2">Contact Number</label>
               <input
                 type="tel"
                 name="dep_number"
@@ -126,21 +120,22 @@
                 id="phot"
               />
             </div>
-            <div class="col-sm-12">
+            <div class="col-12">
               <label for="text3" class="fw-bold mb-2">Description</label><br />
               <textarea
                 name="description"
                 rows="4"
-                cols="129"
                 class="form-control"
                 id="text3"
               ></textarea>
             </div>
           </div>
-          <button type="submit" class="btn-main mt-4">
-            <i class="fa-solid fa-floppy-disk me-2"></i>Save Department
-          </button>
-          <a href="{% url 'managedep' %}" class="btn-back ms-2">Back</a>
+          <div class="d-flex flex-wrap gap-2 mt-4">
+            <button type="submit" class="btn-main">
+              <i class="fa-solid fa-floppy-disk me-2"></i>Save Department
+            </button>
+            <a href="{% url 'managedep' %}" class="btn-back d-inline-flex align-items-center">Back</a>
+          </div>
         </form>
         {% endblock %}
       </div>

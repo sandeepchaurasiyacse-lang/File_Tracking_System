@@ -1,17 +1,17 @@
 {% extends 'admin/adminlayout.html' %} {% block admin %}
 
-<div class="container mt-4">
-  <div class="card shadow">
-    <div class="card-header bg-primary text-white">
-      <h4>Edit File</h4>
+<div class="container-fluid px-3 px-md-4 my-4">
+  <div class="card shadow-sm border-0 rounded-3">
+    <div class="card-header bg-primary text-white py-3">
+      <h4 class="mb-0 fw-bold">Edit File</h4>
     </div>
 
-    <div class="card-body">
+    <div class="card-body p-3 p-md-4">
       <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="mb-3">
-          <label>File No</label>
+          <label class="form-label fw-bold">File No</label>
           <input
             type="text"
             class="form-control"
@@ -21,7 +21,7 @@
         </div>
 
         <div class="mb-3">
-          <label>Subject</label>
+          <label class="form-label fw-bold">Subject</label>
           <input
             type="text"
             name="subject"
@@ -31,7 +31,7 @@
         </div>
 
         <div class="mb-3">
-          <label>Priority</label>
+          <label class="form-label fw-bold">Priority</label>
           <select name="priority" class="form-control">
             <option value="Low" {% if obj.priority == "Low" %}selected{% endif %}>Low</option>
             <option value="Medium" {% if obj.priority == "Medium" %}selected{% endif %}>Medium</option>
@@ -41,7 +41,7 @@
         </div>
 
         <div class="mb-3">
-          <label>Department</label>
+          <label class="form-label fw-bold">Department</label>
           <input
             type="text"
             name="department"
@@ -51,32 +51,34 @@
         </div>
 
         <div class="mb-3">
-          <label>Description</label>
-          <textarea name="description" class="form-control" rows="4">
-{{ obj.description }}</textarea
-          >
+          <label class="form-label fw-bold">Description</label>
+          <textarea name="description" class="form-control" rows="4">{{ obj.description }}</textarea>
         </div>
 
         <div class="mb-3">
-          <label>Current File</label>
-
-          <br />
-
-          {% if obj.file %}
-          <a href="{{ obj.file.url }}" target="_blank"> View Uploaded File </a>
-          {% else %}
-          <span class="text-danger">No File Uploaded</span>
-          {% endif %}
+          <label class="form-label fw-bold">Current File</label>
+          <div>
+            {% if obj.file %}
+            <a href="{{ obj.file.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+              <i class="fa-solid fa-file me-1"></i> View Uploaded File
+            </a>
+            {% else %}
+            <span class="text-danger">No File Uploaded</span>
+            {% endif %}
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label>Upload New File</label>
+        <div class="mb-4">
+          <label class="form-label fw-bold">Upload New File</label>
           <input type="file" name="file" class="form-control" />
         </div>
 
-        <button class="btn btn-success">Update File</button>
-
-        <a href="{% url 'sentfiles' %}" class="btn btn-secondary"> Back </a>
+        <div class="d-flex flex-wrap gap-2">
+          <button type="submit" class="btn btn-success fw-bold px-4">
+            <i class="fa-solid fa-floppy-disk me-1"></i> Update File
+          </button>
+          <a href="{% url 'sentfiles' %}" class="btn btn-secondary px-3"> Back </a>
+        </div>
       </form>
     </div>
   </div>

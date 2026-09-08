@@ -77,11 +77,21 @@
         color: #6b7280;
       }
       @media (max-width: 991.98px) {
+        body {
+          padding: 20px 0;
+        }
         .info-panel {
           border-radius: 16px 16px 0 0;
+          padding: 2rem 1.75rem;
         }
         .form-panel {
           border-radius: 0 0 16px 16px;
+          padding: 2rem 1.75rem;
+        }
+      }
+      @media (max-width: 576px) {
+        .info-panel, .form-panel {
+          padding: 1.5rem 1.25rem;
         }
       }
     </style>

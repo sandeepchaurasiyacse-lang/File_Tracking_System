@@ -1,68 +1,68 @@
 {% extends 'user/userlayout.html' %} {% block user %}
 
-<div class="container">
+<div class="container-fluid px-3 px-md-4 my-4">
   <div class="row">
-    <div class="col-sm-9">
-      <h4 class="bg-success p-2 text-light rounded-5 mt-4">
+    <div class="col-12 col-lg-8 mb-4">
+      <h4 class="bg-success p-2 px-3 text-light rounded-3">
         File Details - {{ab.file_no}}
       </h4>
-      <table class="table table-bordered" style="border: 1px solid green">
-        <tr>
-          <th>Subject</th>
-          <td>{{ab.subject}}</td>
-        </tr>
-        <tr>
-          <th>Create User</th>
-          <td>{{ab.create_user}}</td>
-        </tr>
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+          <tr>
+            <th style="width: 30%;">Subject</th>
+            <td>{{ab.subject}}</td>
+          </tr>
+          <tr>
+            <th>Create User</th>
+            <td>{{ab.create_user}}</td>
+          </tr>
 
-        <tr>
-          <th>Current User</th>
-          <td>{{ab.current_user}}</td>
-        </tr>
+          <tr>
+            <th>Current User</th>
+            <td>{{ab.current_user}}</td>
+          </tr>
 
-        <tr>
-          <th>Description</th>
-          <td>{{ab.description}}</td>
-        </tr>
+          <tr>
+            <th>Description</th>
+            <td>{{ab.description}}</td>
+          </tr>
 
-        <tr>
-          <th>Department</th>
-          <td>{{ab.department}}</td>
-        </tr>
+          <tr>
+            <th>Department</th>
+            <td>{{ab.department}}</td>
+          </tr>
 
-        <tr>
-          <th>File</th>
-          <td>
-            {% if ab.file %}
-            <a href="{{ab.file.url}}" target="_blank" class="text-dark">Click Here</a>
-            {% else %}
-            <span class="text-muted">No Attachment</span>
-            {% endif %}
-          </td>
-        </tr>
+          <tr>
+            <th>File</th>
+            <td>
+              {% if ab.file %}
+              <a href="{{ab.file.url}}" target="_blank" class="btn btn-sm btn-outline-success">View Attachment</a>
+              {% else %}
+              <span class="text-muted">No Attachment</span>
+              {% endif %}
+            </td>
+          </tr>
 
-        <tr>
-          <th>Status</th>
-          <td><span class="badge bg-success">{{ab.status}}</span></td>
-        </tr>
-      </table>
+          <tr>
+            <th>Status</th>
+            <td><span class="badge bg-success">{{ab.status}}</span></td>
+          </tr>
+        </table>
+      </div>
 
-      <h4 class="bg-success p-2 text-light rounded-5">File Movement Status</h4>
+      <h4 class="bg-success p-2 px-3 text-light rounded-3 mt-4">File Movement Status</h4>
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-12">
           {% for i in fileh %}
 
-          <div class="card mb-2" style="padding: 20px; background-color: wheat">
-            <div class="row">
-              <div class="col-sm-6">File_no: {{i.File_no}}</div>
-              <div class="col-sm-6 text-end">{{i.create_at}}</div>
+          <div class="card mb-2" style="padding: 16px; background-color: #fef3c7; border-radius: 12px; border: 1px solid #fde68a;">
+            <div class="d-flex justify-content-between flex-wrap">
+              <div><strong>File No:</strong> {{i.File_no}}</div>
+              <div class="text-muted small">{{i.create_at}}</div>
             </div>
-            <div class="row">
-              <div class="col-sm-12">
-                <h5>From User :- {{i.current_user}} To {{i.forwarded_user}}</h5>
-                <p>Remark :- {{i.remark}}</p>
-              </div>
+            <div class="mt-2">
+              <h6 class="mb-1"><strong>From:</strong> {{i.current_user}} &rarr; <strong>To:</strong> {{i.forwarded_user}}</h6>
+              <p class="mb-0 text-secondary"><strong>Remark:</strong> {{i.remark|default:"No remark"}}</p>
             </div>
           </div>
 
@@ -73,14 +73,14 @@
       </div>
     </div>
 
-    <div class="col-sm-3 mt-4">
+    <div class="col-12 col-lg-4 mb-4">
       {% if ab.status|lower != "close" and ab.status|lower != "closed" %}
-      <form method="post" class="border border-dark shadow p-3 rounded-1">
+      <form method="post" class="border bg-white shadow-sm p-3 p-md-4 rounded-3">
         {% csrf_token %}
         <div class="row">
-          <div class="col-sm-12">
-            <h5>File Action</h5>
-            <p>Current User</p>
+          <div class="col-12">
+            <h5 class="fw-bold mb-3">File Action</h5>
+            <label class="form-label fw-bold">Current User</label>
             <input
               type="text"
               name="current_user"
@@ -92,8 +92,8 @@
           </div>
         </div>
         <div class="row mt-2">
-          <div class="col-sm-12">
-            <p>Move/Action</p>
+          <div class="col-12">
+            <label class="form-label fw-bold">Move/Action</label>
             <select name="action" id="" class="form-control" required>
               <option value="">--Select--</option>
               <option value="Forwarded">Forward</option>
@@ -107,8 +107,8 @@
         </div>
 
         <div class="row mt-2">
-          <div class="col-sm-12">
-            <p>All User</p>
+          <div class="col-12">
+            <label class="form-label fw-bold">All User</label>
             <select name="forwarded_user" id="" class="form-control">
               <option value="">--Select User--</option>
               {% for i in ur %}
@@ -119,15 +119,15 @@
         </div>
 
         <div class="row mt-2">
-          <div class="col-sm-12">
-            <p>Remark</p>
-            <textarea name="remark" id="" class="form-control"></textarea>
+          <div class="col-12">
+            <label class="form-label fw-bold">Remark</label>
+            <textarea name="remark" rows="3" class="form-control"></textarea>
           </div>
         </div>
 
-        <div class="row mt-2">
-          <div class="col-sm-12">
-            <button class="btn bg-success form-control text-light">Move</button>
+        <div class="row mt-3">
+          <div class="col-12">
+            <button class="btn btn-success w-100 py-2 fw-bold">Submit Action</button>
           </div>
         </div>
       </form>

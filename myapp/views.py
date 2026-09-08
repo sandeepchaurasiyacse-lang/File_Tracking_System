@@ -10,88 +10,26 @@ from django.core.mail import send_mail
 from django.conf import settings
 import re
 
-def ensure_default_accounts():
-    try:
-        if not login.objects.filter(role__iexact='Admin').exists():
-            login.objects.create(username='admin@gmail.com', password='admin@123', role='Admin')
-
-        if not adddepartment.objects.exists():
-            adddepartment.objects.create(
-                dep_name='Information Technology',
-                dep_code='DEP-IT',
-                dep_head='Mr. Head IT',
-                dep_email='it@ggl.com',
-                dep_number='0522-123456',
-                status='Active',
-                create_at='10:00:00'
-            )
-            adddepartment.objects.create(
-                dep_name='Human Resources',
-                dep_code='DEP-HR',
-                dep_head='Mrs. Head HR',
-                dep_email='hr@ggl.com',
-                dep_number='0522-654321',
-                status='Active',
-                create_at='10:00:00'
-            )
-
-        if not addemp.objects.filter(username__iexact='admin@gmail.com').exists():
-            addemp.objects.create(
-                name='Administrator',
-                username='admin@gmail.com',
-                email='admin@gmail.com',
-                mobile='9876543210',
-                password='admin@123',
-                address='GGL Head Office, Vibhuti Khand, Lucknow',
-                department='Information Technology',
-                disignation='System Administrator',
-                status='Active',
-                emp_id='EMP001'
-            )
-
-        if not addemp.objects.filter(username__iexact='rakesh@gmail.com').exists():
-            addemp.objects.create(
-                name='Rakesh Kumar',
-                username='rakesh@gmail.com',
-                email='rakesh@gmail.com',
-                mobile='9876543211',
-                password='admin@123',
-                address='Lucknow, UP',
-                department='Information Technology',
-                disignation='Senior Engineer',
-                status='Active',
-                emp_id='EMP002'
-            )
-            login.objects.get_or_create(
-                username='rakesh@gmail.com',
-                defaults={'password': 'admin@123', 'role': 'User'}
-            )
-    except Exception:
-        pass
-
 def home(request):
-    ensure_default_accounts()
     return render(request, 'user/home.html')
 
 def Adminlogin(request):
-    ensure_default_accounts()
     saved_admin_username = request.COOKIES.get('remember_admin', '')
     return render(request, 'admin/adminlogin.html', {'saved_admin_username': saved_admin_username})
 
 def loginsave(request):
-    ensure_default_accounts()
     if request.method == "POST":
-        username = request.POST.get('username', '').strip()
-        password = request.POST.get('password', '').strip()
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         remember = request.POST.get('remember')
-        user = login.objects.filter(username__iexact=username, password=password).first()
+        user = login.objects.filter(username=username, password=password).first()
         if user:
             if user.role and (user.role.lower() == 'admin'):
-                request.session['adminid'] = user.username
+                request.session['adminid'] = username
                 response = redirect('dashboard')
                 if remember:
                     request.session.set_expiry(1209600)
-                    response.set_cookie('remember_admin', user.username, max_age=1209600)
+                    response.set_cookie('remember_admin', username, max_age=1209600)
                 else:
                     request.session.set_expiry(0)
                     response.delete_cookie('remember_admin')
@@ -485,17 +423,15 @@ def delete_file(request, file_no):
 # ==================== User Views ====================
 
 def userlogin(request):
-    ensure_default_accounts()
     saved_username = request.COOKIES.get('remember_user', '')
     return render(request, 'user/userlogin.html', {'saved_username': saved_username})
 
 def userlogcode(request):
-    ensure_default_accounts()
     if request.method == "POST":
-        username = request.POST.get('username', '').strip()
-        password = request.POST.get('password', '').strip()
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         remember = request.POST.get('remember')
-        user = addemp.objects.filter(Q(username__iexact=username) | Q(email__iexact=username), password=password).first()
+        user = addemp.objects.filter(username=username, password=password).first()
         if user:
             if user.status and user.status.lower() == "active":
                 request.session['userid'] = user.username
@@ -504,7 +440,7 @@ def userlogcode(request):
                 response = redirect('userdashboard')
                 if remember:
                     request.session.set_expiry(1209600)
-                    response.set_cookie('remember_user', user.username, max_age=1209600)
+                    response.set_cookie('remember_user', username, max_age=1209600)
                 else:
                     request.session.set_expiry(0)
                     response.delete_cookie('remember_user')
