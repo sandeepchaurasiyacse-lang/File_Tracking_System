@@ -2,38 +2,40 @@
 <style>
   .welcome-card {
     background: linear-gradient(135deg, #1d4ed8, #102f76);
-    border-radius: 20px;
-    padding: 28px;
+    border-radius: 16px;
+    padding: 24px;
     color: #fff;
-    margin-bottom: 24px;
-    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-top: 20px;
   }
-  .a {
-    height: 200px;
-    border-radius: 20px;
+  .stat-card {
+    border-radius: 14px;
+    padding: 18px 16px;
+    color: #fff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  .file {
-    margin-top: 30px;
-    margin-left: 30px;
-    font-size: 25px;
-    height: 50px;
-    width: 50px;
-    border-radius: 10px;
-    background-color: #e8efff;
-    color: #1d4ed8;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+  .stat-card h5 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    opacity: 0.9;
+  }
+  .stat-card h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0;
   }
   .section-card {
     background: #fff;
     border: 1px solid #dbe7df;
-    border-radius: 20px;
-    padding: 26px;
-    box-shadow: 0 16px 36px rgba(8, 112, 58, 0.07);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 8px 24px rgba(8, 112, 58, 0.05);
   }
-
   .section-card2 {
     display: flex;
     justify-content: space-between;
@@ -41,132 +43,135 @@
     font-weight: 800;
   }
   .btn-main {
-    height: 44px;
+    height: 42px;
     border: 0;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #091985, #11158b);
+    border-radius: 8px;
+    background: linear-gradient(135deg, #1d4ed8, #102f76);
     color: #fff;
-    font-weight: 800;
-    padding: 0 18px;
+    font-weight: 700;
+    padding: 0 16px;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    font-size: 14px;
+  }
+  .table thead th {
+    background: #e0e7ff;
+    color: #1e40af;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .table tbody td {
+    font-size: 13px;
+    white-space: nowrap;
+    vertical-align: middle;
   }
 
-  .table thead th {
-    background: #a9c7f6;
-    color: blue;
-  }
-  .forward {
-    background: #e2edff;
-    color: #2358a6;
+  @media (max-width: 576px) {
+    .welcome-card {
+      padding: 16px;
+      margin-top: 14px;
+      margin-bottom: 14px;
+    }
+    .welcome-card h2 {
+      font-size: 1.25rem;
+    }
+    .stat-card {
+      padding: 14px 12px;
+    }
+    .stat-card h5 {
+      font-size: 12px;
+    }
+    .stat-card h2 {
+      font-size: 22px;
+    }
+    .section-card {
+      padding: 14px 12px;
+    }
   }
 </style>
-<div class="container-fluid">
+
 <div class="container-fluid px-3 px-md-4">
   <div class="row">
-    <div class="col-sm-12">
     <div class="col-12">
       <div class="welcome-card">
         <h2>Welcome Admin, GGL Head Office</h2>
-        <p class="mb-0">
+        <p class="mb-0 opacity-75">
           Manage complete file movement system from this dashboard.
         </p>
       </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-3">
-      <div class="card bg-primary text-white">
-  <div class="row g-3">
-    <div class="col-12 col-sm-6 col-lg-3">
-      <div class="card bg-primary text-white h-100">
-        <div class="card-body">
-          <h5>Total Files</h5>
-          <h2>{{ total_files }}</h2>
-        </div>
+  <div class="row g-2 g-md-3">
+    <div class="col-6 col-md-3">
+      <div class="stat-card bg-primary h-100">
+        <h5>Total Files</h5>
+        <h2>{{ total_files }}</h2>
       </div>
     </div>
 
-    <div class="col-md-3">
-      <div class="card bg-success text-white">
-    <div class="col-12 col-sm-6 col-lg-3">
-      <div class="card bg-success text-white h-100">
-        <div class="card-body">
-          <h5>Received Files</h5>
-          <h2>{{ received_files }}</h2>
-        </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card bg-success h-100">
+        <h5>Received Files</h5>
+        <h2>{{ received_files }}</h2>
       </div>
     </div>
 
-    <div class="col-md-3">
-      <div class="card bg-warning text-dark">
-    <div class="col-12 col-sm-6 col-lg-3">
-      <div class="card bg-warning text-dark h-100">
-        <div class="card-body">
-          <h5>Pending Files</h5>
-          <h2>{{ pending_files }}</h2>
-        </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card bg-warning text-dark h-100">
+        <h5>Pending Files</h5>
+        <h2>{{ pending_files }}</h2>
       </div>
     </div>
 
-    <div class="col-md-3">
-      <div class="card bg-danger text-white">
-    <div class="col-12 col-sm-6 col-lg-3">
-      <div class="card bg-danger text-white h-100">
-        <div class="card-body">
-          <h5>Rejected Files</h5>
-          <h2>{{ rejected_files }}</h2>
-        </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card bg-danger h-100">
+        <h5>Rejected Files</h5>
+        <h2>{{ rejected_files }}</h2>
       </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="section-card mt-4 mb-4">
-        <div class="section-card2 mb-4">
-          <h4 class="fw-bolder">My Recent Movement</h4>
-
+  <div class="row mt-3 mt-md-4 mb-4">
+    <div class="col-12">
+      <div class="section-card">
+        <div class="section-card2 mb-3">
+          <h5 class="fw-bolder mb-0">My Recent Movement</h5>
           <a href="{% url 'allfile' %}" class="btn-main"> View My Files </a>
         </div>
 
-        <div class="card">
-          <div class="card-body p-0">
-            <div class="table-responsive">
-              <table class="table table-striped mb-0">
-                <thead>
-                  <tr>
-                    <th>File No</th>
-                    <th>Subject</th>
-                    <th>Created By</th>
-                    <th>Current User</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover mb-0">
+            <thead>
+              <tr>
+                <th>File No</th>
+                <th>Subject</th>
+                <th>Created By</th>
+                <th>Current User</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
 
-                <tbody>
-                  {% for r in recent %}
-                  <tr>
-                    <td>{{ r.file_no }}</td>
-                    <td>{{ r.subject }}</td>
-                    <td>{{ r.from_user }}</td>
-                    <td>{{ r.to_user }}</td>
-                    <td>{{ r.action }}</td>
-                    <td>{{ r.date }}</td>
-                  </tr>
-                  {% empty %}
-                  <tr>
-                    <td colspan="6" class="text-center">No Recent Movement</td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </div>
+            <tbody>
+              {% for r in recent %}
+              <tr>
+                <td><strong>{{ r.file_no }}</strong></td>
+                <td>{{ r.subject }}</td>
+                <td>{{ r.from_user }}</td>
+                <td>{{ r.to_user }}</td>
+                <td><span class="badge bg-primary">{{ r.action }}</span></td>
+                <td>{{ r.date }}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="6" class="text-center py-4 text-muted">No Recent Movement</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
