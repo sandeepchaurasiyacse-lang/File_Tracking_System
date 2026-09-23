@@ -21,6 +21,9 @@
   }
 
   .form {
+    height: 50px;
+    width: 510px;
+    {% comment %} border: 1px solid black; {% endcomment %}
     height: 46px;
     width: 100%;
   }
@@ -47,6 +50,7 @@
   }
 </style>
 
+<div class="container-fluid px-4 mb-5">
 <div class="container-fluid px-3 px-md-4 mb-5">
   <div class="row">
     <div class="col-12">
@@ -66,6 +70,7 @@
               {{ i }}
             </div>
             {% endfor %}
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="Ename" class="fw-bold mb-2">File NO</label>
               <input
@@ -77,6 +82,7 @@
               />
             </div>
 
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="Mname" class="fw-bold mb-2">Subject</label>
               <input
@@ -86,6 +92,7 @@
                 id="Mname"
               />
             </div>
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="priority" class="fw-bold mb-2">Priority</label>
               <select name="priority" id="" class="form-control form">
@@ -96,6 +103,7 @@
               </select>
             </div>
 
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="Dname" class="fw-bold mb-2">Department</label>
               <select name="department" id="Dname" class="form-control form">
@@ -105,6 +113,7 @@
                 {% endfor %}
               </select>
             </div>
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="move" class="fw-bold mb-2">Move / Assign To</label>
               <select name="current_user" class="form-control form">
@@ -119,6 +128,7 @@
               </select>
             </div>
 
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="attach" class="fw-bold mb-2">Attachment</label>
               <input
@@ -128,16 +138,23 @@
                 id="attach"
               />
             </div>
+            <div class="col-sm-12">
             <div class="col-12">
               <label for="text" class="fw-bold mb-2">Description</label><br />
               <textarea
                 name="description"
+                rows="5"
+                cols="129"
                 rows="4"
                 class="form-control"
                 id="text"
               ></textarea>
             </div>
           </div>
+          <button type="submit" class="btn-main mt-4">
+            <i class="fa-solid fa-floppy-disk me-2"></i>Save File
+          </button>
+          <a href="{% url 'allfile' %}" class="btn-back ms-2">Back</a>
           <div class="d-flex flex-wrap gap-2 mt-4">
             <button type="submit" class="btn-main">
               <i class="fa-solid fa-floppy-disk me-2"></i>Save File

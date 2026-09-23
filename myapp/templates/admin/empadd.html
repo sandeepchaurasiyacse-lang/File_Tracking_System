@@ -21,6 +21,9 @@
   }
 
   .form {
+    height: 50px;
+    width: 510px;
+    {% comment %} border: 1px solid black; {% endcomment %}
     height: 46px;
     width: 100%;
   }
@@ -47,6 +50,7 @@
   }
 </style>
 
+<div class="container-fluid px-4 mb-5">
 <div class="container-fluid px-3 px-md-4 mb-5">
   <div class="row">
     <div class="col-12">
@@ -66,6 +70,7 @@
             {% for i in messages %}
             <div class="alert alert-success" role="alert">{{i}}</div>
             {% endfor %}
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="Ename" class="fw-bold mb-2">Full Name</label>
               <input
@@ -76,6 +81,7 @@
               />
             </div>
 
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="Mname" class="fw-bold mb-2">Username</label>
               <input
@@ -85,6 +91,7 @@
                 id="Mname"
               />
             </div>
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="priority" class="fw-bold mb-2">Email</label>
               <input
@@ -95,6 +102,7 @@
               />
             </div>
 
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="Dname" class="fw-bold mb-2">Mobile</label>
               <input
@@ -104,6 +112,7 @@
                 id="Dname"
               />
             </div>
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="move" class="fw-bold mb-2">Employee ID</label>
               <input
@@ -113,6 +122,7 @@
                 id="move"
               />
             </div>
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="attach" class="fw-bold mb-2">Department</label>
               <select name="department" id="attach" class="form-control form">
@@ -122,6 +132,7 @@
                 {% endfor %}
               </select>
             </div>
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="move1" class="fw-bold mb-2">Designation</label>
               <input
@@ -131,6 +142,7 @@
                 id="move1"
               />
             </div>
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="attach1" class="fw-bold mb-2">Static Role</label>
               <select name="role" id="attach1" class="form-control form">
@@ -139,6 +151,7 @@
                 <option value="User">User</option>
               </select>
             </div>
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="attach2" class="fw-bold mb-2">Status</label>
               <select name="status" id="attach2" class="form-control form">
@@ -146,6 +159,7 @@
                 <option value="Inactive">Inactive</option>
               </select>
             </div>
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="move3" class="fw-bold mb-2">Password</label>
               <input
@@ -155,6 +169,7 @@
                 id="move3"
               />
             </div>
+            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="phot" class="fw-bold mb-2">Photo</label><br />
               <input
@@ -164,16 +179,23 @@
                 id="phot"
               />
             </div>
+            <div class="col-sm-12">
             <div class="col-12">
               <label for="text3" class="fw-bold mb-2">Address</label><br />
               <textarea
                 name="address"
+                rows="5"
+                cols="129"
                 rows="4"
                 class="form-control"
                 id="text3"
               ></textarea>
             </div>
           </div>
+          <button type="submit" class="btn-main mt-4">
+            <i class="fa-solid fa-floppy-disk me-2"></i>Save Employee
+          </button>
+          <a href="{% url 'manageemp' %}" class="btn-back ms-2">Back</a>
           <div class="d-flex flex-wrap gap-2 mt-4">
             <button type="submit" class="btn-main">
               <i class="fa-solid fa-floppy-disk me-2"></i>Save Employee
