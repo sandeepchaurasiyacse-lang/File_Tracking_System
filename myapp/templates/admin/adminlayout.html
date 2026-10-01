@@ -21,6 +21,7 @@
     <style>
       * {
         margin: 0;
+        padding: 0;
         box-sizing: border-box;
         font-family: "Poppins", sans-serif;
       }
@@ -34,32 +35,83 @@
         text-decoration: none;
       }
 
-      /* Sidebar Styling */
-      .sidebar {
-        background: #fff;
+      /* App Layout */
+      .app-layout {
+        display: flex;
+        min-height: 100vh;
+        width: 100%;
       }
 
+      /* Desktop Sidebar */
       @media (min-width: 992px) {
-        .sidebar {
+        .app-sidebar {
+          width: 260px;
+          min-width: 260px;
+          max-width: 260px;
+          height: 100vh;
           position: sticky;
           top: 0;
-          height: 100vh;
+          background: #fff;
           overflow-y: auto;
-          display: block !important;
           z-index: 1020;
+          box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        }
+        .app-main {
+          flex: 1;
+          min-width: 0;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+        }
+        .sidebar-overlay {
+          display: none !important;
         }
       }
 
+      /* Mobile / Tablet Sidebar */
       @media (max-width: 991.98px) {
-        .sidebar {
-          width: 280px !important;
-          max-width: 85vw !important;
-          height: 100vh !important;
-          overflow-y: auto;
+        .app-sidebar {
+          position: fixed;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          width: 280px;
+          max-width: 85vw;
+          height: 100vh;
+          background: #fff;
           z-index: 1050;
+          overflow-y: auto;
+          transform: translateX(-100%);
+          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: 4px 0 25px rgba(0, 0, 0, 0.25);
+        }
+        .app-sidebar.open {
+          transform: translateX(0);
+        }
+        .app-main {
+          width: 100%;
+          min-width: 100%;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+        }
+        .sidebar-overlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 1040;
+          backdrop-filter: blur(2px);
+        }
+        .sidebar-overlay.open {
+          display: block;
         }
       }
 
+      /* Sidebar Header */
       .box1 {
         background: linear-gradient(135deg, #1d4ed8, #102f76);
         padding: 22px 20px;
@@ -84,8 +136,9 @@
         opacity: 0.85;
       }
 
+      /* Sidebar Menu */
       .box2 {
-        padding: 14px 12px;
+        padding: 14px 12px 30px;
         background-color: #fff;
       }
 
@@ -129,14 +182,7 @@
         transform: scale(1.15);
       }
 
-      /* Main Content & Topbar */
-      .s {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-      }
-
+      /* Topbar */
       .topbar {
         background: linear-gradient(135deg, #1d4ed8, #102f76);
         position: sticky;
@@ -187,7 +233,12 @@
         color: #bfdbfe;
       }
 
-      /* Responsive Helpers */
+      .page-content {
+        flex: 1;
+        padding-bottom: 30px;
+      }
+
+      /* UI Responsive Helpers */
       .btn, .btn-main, .main, .main2, .btn-back {
         transition: all 0.2s ease-in-out;
       }
@@ -232,138 +283,143 @@
   </head>
 
   <body>
-    <div class="container-fluid p-0">
-      <div class="row g-0">
-        <!-- Sidebar with Bootstrap 5.3 offcanvas-lg (Hidden in hamburger drawer on mobile/tablet) -->
-        <div
-          class="col-lg-2 offcanvas-lg offcanvas-start sidebar p-0"
-          tabindex="-1"
-          id="adminSidebar"
-          aria-labelledby="adminSidebarLabel"
-        >
-          <div class="box1 d-flex justify-content-between align-items-center d-lg-block">
-            <div>
-              <img src="https://gglengage.com/images/ggllogo.png" alt="GGL Logo" />
-              <h5 id="adminSidebarLabel">GGL Admin</h5>
-              <small>Administration Dashboard</small>
-            </div>
+    <div class="app-layout">
+      <!-- Dark backdrop on mobile when drawer is open -->
+      <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+      <!-- App Sidebar (Left static on desktop, slide drawer on mobile) -->
+      <aside class="app-sidebar" id="appSidebar">
+        <div class="box1 d-flex justify-content-between align-items-center">
+          <div>
+            <img src="https://gglengage.com/images/ggllogo.png" alt="GGL Logo" />
+            <h5>GGL Admin</h5>
+            <small>Administration Dashboard</small>
+          </div>
+          <button
+            type="button"
+            class="btn-close btn-close-white d-lg-none"
+            onclick="toggleSidebar()"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div class="box2">
+          <div class="menu-title">Main</div>
+
+          <a href="{% url 'dashboard' %}">
+            <i class="fa-solid fa-gauge-high"></i>
+            Admin Dashboard
+          </a>
+
+          <div class="menu-title">File Management</div>
+
+          <a href="{% url 'createfile' %}">
+            <i class="fa-solid fa-file-circle-plus"></i>
+            Create File
+          </a>
+
+          <a href="{% url 'receivedfile' %}">
+            <i class="fa-solid fa-clipboard"></i>
+            Received Files
+          </a>
+
+          <a href="{% url 'sentfiles' %}">
+            <i class="fa-solid fa-paper-plane"></i>
+            Sent Files
+          </a>
+
+          <a href="{% url 'pendingfiles' %}">
+            <i class="fa-solid fa-clock"></i>
+            Pending Files
+          </a>
+
+          <a href="{% url 'allfile' %}">
+            <i class="fa-solid fa-folder-open"></i>
+            All Files
+          </a>
+
+          <a href="{% url 'filetrack' %}">
+            <i class="fa-solid fa-magnifying-glass-location"></i>
+            File Track
+          </a>
+
+          <div class="menu-title">Administration</div>
+
+          <a href="{% url 'empadd' %}">
+            <i class="fa-solid fa-user-plus"></i>
+            Add Employee
+          </a>
+
+          <a href="{% url 'manageemp' %}">
+            <i class="fa-solid fa-users"></i>
+            Manage Employees
+          </a>
+
+          <a href="{% url 'adddep' %}">
+            <i class="fa-solid fa-building"></i>
+            Add Department
+          </a>
+
+          <a href="{% url 'managedep' %}">
+            <i class="fa-solid fa-building-user"></i>
+            Manage Departments
+          </a>
+
+          <div class="menu-title">Account</div>
+
+          <a href="{% url 'adminlogout' %}">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+          </a>
+        </div>
+      </aside>
+
+      <!-- App Main Content Area -->
+      <main class="app-main">
+        <!-- Topbar -->
+        <header class="topbar d-flex align-items-center justify-content-between">
+          <!-- Left: Hamburger Button + Title -->
+          <div class="d-flex align-items-center gap-2">
             <button
+              class="hamburger-btn d-lg-none"
               type="button"
-              class="btn-close btn-close-white d-lg-none"
-              data-bs-dismiss="offcanvas"
-              data-bs-target="#adminSidebar"
-              aria-label="Close"
-            ></button>
+              onclick="toggleSidebar()"
+              aria-label="Toggle navigation"
+            >
+              <i class="fa-solid fa-bars"></i>
+            </button>
+            <h2 class="text-white fw-bolder topbar-title">Admin Panel</h2>
           </div>
 
-          <div class="box2">
-            <div class="menu-title">Main</div>
-
-            <a href="{% url 'dashboard' %}">
-              <i class="fa-solid fa-gauge-high"></i>
-              Admin Dashboard
-            </a>
-
-            <div class="menu-title">File Management</div>
-
-            <a href="{% url 'createfile' %}">
-              <i class="fa-solid fa-file-circle-plus"></i>
-              Create File
-            </a>
-
-            <a href="{% url 'receivedfile' %}">
-              <i class="fa-solid fa-clipboard"></i>
-              Received Files
-            </a>
-
-            <a href="{% url 'sentfiles' %}">
-              <i class="fa-solid fa-paper-plane"></i>
-              Sent Files
-            </a>
-
-            <a href="{% url 'pendingfiles' %}">
-              <i class="fa-solid fa-clock"></i>
-              Pending Files
-            </a>
-
-            <a href="{% url 'allfile' %}">
-              <i class="fa-solid fa-folder-open"></i>
-              All Files
-            </a>
-
-            <a href="{% url 'filetrack' %}">
-              <i class="fa-solid fa-magnifying-glass-location"></i>
-              File Track
-            </a>
-
-            <div class="menu-title">Administration</div>
-
-            <a href="{% url 'empadd' %}">
-              <i class="fa-solid fa-user-plus"></i>
-              Add Employee
-            </a>
-
-            <a href="{% url 'manageemp' %}">
-              <i class="fa-solid fa-users"></i>
-              Manage Employees
-            </a>
-
-            <a href="{% url 'adddep' %}">
-              <i class="fa-solid fa-building"></i>
-              Add Department
-            </a>
-
-            <a href="{% url 'managedep' %}">
-              <i class="fa-solid fa-building-user"></i>
-              Manage Departments
-            </a>
-
-            <div class="menu-title">Account</div>
-
-            <a href="{% url 'adminlogout' %}">
-              <i class="fa-solid fa-right-from-bracket"></i>
-              Logout
-            </a>
-          </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="col-12 col-lg-10 s p-0">
-          <div class="topbar d-flex align-items-center justify-content-between">
-            <!-- Left: Hamburger Button + Title -->
-            <div class="d-flex align-items-center gap-2">
-              <button
-                class="hamburger-btn d-lg-none"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#adminSidebar"
-                aria-controls="adminSidebar"
-                aria-label="Toggle navigation"
-              >
-                <i class="fa-solid fa-bars"></i>
-              </button>
-              <h2 class="text-white fw-bolder topbar-title">Admin Panel</h2>
+          <!-- Right: Admin Info & Avatar -->
+          <div class="d-flex align-items-center">
+            <div class="text-end me-2 me-md-3">
+              <h6 class="office mb-0 fw-bolder d-none d-sm-block">GGL Head Office</h6>
+              <small class="admin-text fw-bold text-white">Administrator</small>
             </div>
-
-            <!-- Right: Admin Info & Avatar -->
-            <div class="d-flex align-items-center">
-              <div class="text-end me-2 me-md-3">
-                <h6 class="office mb-0 fw-bolder d-none d-sm-block">GGL Head Office</h6>
-                <small class="admin-text fw-bold text-white">Administrator</small>
-              </div>
-              <div class="avatar">G</div>
-            </div>
+            <div class="avatar">G</div>
           </div>
+        </header>
 
-          <div class="flex-grow-1">
-            {% block admin %}
+        <!-- Page Content -->
+        <div class="page-content">
+          {% block admin %}
 
-            {% endblock %}
-          </div>
+          {% endblock %}
         </div>
-      </div>
+      </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function toggleSidebar() {
+        var sidebar = document.getElementById('appSidebar');
+        var overlay = document.getElementById('sidebarOverlay');
+        if (sidebar && overlay) {
+          sidebar.classList.toggle('open');
+          overlay.classList.toggle('open');
+        }
+      }
+    </script>
   </body>
 </html>
