@@ -1,4 +1,6 @@
-{% extends 'user/userlayout.html' %} {% block user %}
+{% extends 'user/userlayout.html' %} 
+
+{% block user %}
 
 <style>
   * {
@@ -21,17 +23,14 @@
   }
 
   .form {
-    height: 50px;
-    width: 510px;
-    {% comment %} border: 1px solid black; {% endcomment %}
     height: 46px;
     width: 100%;
   }
+
   .btn-main {
     height: 44px;
     border: 0;
     border-radius: 10px;
-    background: linear-gradient(135deg, #0fb425, #102f76);
     background: linear-gradient(135deg, #0fb425, #08703a);
     color: #fff;
     font-weight: 800;
@@ -41,103 +40,94 @@
     align-items: center;
     justify-content: center;
   }
-  .btn-back{
+
+  .btn-back {
     border-radius: 9px;
     background: #e7f4ec;
     color: #0ab527;
     font-weight: 800;
     text-decoration: none;
-    padding: 8px 12px;
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
   }
 </style>
 
-<div class="container-fluid px-4 mb-5">
 <div class="container-fluid px-3 px-md-4 mb-5">
   <div class="row">
     <div class="col-12">
-      <h2 class="fw-bolder mt-4">Create File</h2>
-      <p class="text">Upload/update file and assign it to another employee</p>
+      <h2 class="fw-bolder mt-4">Upload File</h2>
+      <p class="text">Upload file and assign it to another employee or department</p>
     </div>
 
     <div class="col-12 mt-2">
       <div class="section-card">
         <h4 class="fw-bolder mb-4">File Information</h4>
 
+        {% for i in messages %}
+        <div class="alert {% if i.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show" role="alert">
+          {{ i }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="row g-3">
-            {% for i in messages %}
-            <div class="alert alert-success" role="alert">
-              {{ i }}
-            </div>
-            {% endfor %}
-            <div class="col-sm-6">
             <div class="col-12 col-md-6">
-              <label for="Ename" class="fw-bold mb-2">File NO</label>
+              <label for="Ename" class="fw-bold mb-2">File No</label>
               <input
                 type="text"
                 name="file_no"
                 class="form-control form"
                 id="Ename"
-                placeholder="Auto generate if blank"
+                placeholder="Auto generate if left blank"
               />
             </div>
 
-            <div class="col-sm-6">
             <div class="col-12 col-md-6">
-              <label for="Mname" class="fw-bold mb-2">Subject</label>
+              <label for="Mname" class="fw-bold mb-2">Subject <span class="text-danger">*</span></label>
               <input
                 type="text"
                 name="subject"
                 class="form-control form"
                 id="Mname"
+                placeholder="Enter file subject"
+                required
               />
             </div>
-            <div class="col-sm-6">
+
             <div class="col-12 col-md-6">
-              <label for="priority" class="fw-bold mb-2">Priority</label>
-              <select name="priority" id="" class="form-control form">
+              <label for="priority" class="fw-bold mb-2">Priority <span class="text-danger">*</span></label>
+              <select name="priority" id="priority" class="form-control form" required>
                 <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
+                <option value="Medium" selected>Medium</option>
                 <option value="High">High</option>
                 <option value="Urgent">Urgent</option>
               </select>
             </div>
 
-            <div class="col-sm-6">
             <div class="col-12 col-md-6">
-              <label for="Dname" class="fw-bold mb-2">Department</label>
-              <select name="department" id="Dname" class="form-control form">
-                <option value="">--Asign Department --</option>
+              <label for="Dname" class="fw-bold mb-2">Department <span class="text-danger">*</span></label>
+              <select name="department" id="Dname" class="form-control form" required>
+                <option value="">-- Select Department --</option>
                 {% for i in dp %}
-                <option value="{{i.dep_name}}">{{i.dep_name}}</option>
+                <option value="{{ i.dep_name }}">{{ i.dep_name }}</option>
                 {% endfor %}
               </select>
             </div>
-            <div class="col-sm-6">
+
             <div class="col-12 col-md-6">
-              <label for="move" class="fw-bold mb-2">Move / Assign To</label>
-
-              <select name="current_user" id="move" class="form-control form">
-                <option value="">--Assign User--</option>
-
-                <!-- Employee List -->
+              <label for="move" class="fw-bold mb-2">Assign / Move To <span class="text-danger">*</span></label>
+              <select name="current_user" id="move" class="form-control form" required>
+                <option value="">-- Assign User --</option>
                 {% for i in em %}
-                <option value="{{ i.username }}">
-                  {{ i.username }} (Employee)
-                </option>
-                {% endfor %}
-
-                <!-- Admin List -->
-                {% for i in ad %}
-                <option value="{{ i.username }}">
-                  {{ i.username }} (Admin)
-                </option>
+                <option value="{{ i.username }}">{{ i.name }} ({{ i.username }})</option>
                 {% endfor %}
               </select>
             </div>
 
-            <div class="col-sm-6">
             <div class="col-12 col-md-6">
               <label for="attach" class="fw-bold mb-2">Attachment</label>
               <input
@@ -147,28 +137,24 @@
                 id="attach"
               />
             </div>
-            <div class="col-sm-12">
+
             <div class="col-12">
-              <label for="text" class="fw-bold mb-2">Description</label><br />
+              <label for="text" class="fw-bold mb-2">Description / Remarks</label>
               <textarea
                 name="description"
-                rows="5"
-                cols="129"
-                rows="4"
+                rows="3"
                 class="form-control"
                 id="text"
+                placeholder="Enter description or remarks for this file..."
               ></textarea>
             </div>
           </div>
-          <button type="submit" class="btn-main mt-4">
-            <i class="fa-solid fa-floppy-disk me-2"></i>Save File
-          </button>
-          <a href="{% url 'userdashboard' %}" class="btn-back ms-2">Back</a>
+
           <div class="d-flex flex-wrap gap-2 mt-4">
             <button type="submit" class="btn-main">
               <i class="fa-solid fa-floppy-disk me-2"></i>Save File
             </button>
-            <a href="{% url 'userdashboard' %}" class="btn-back d-inline-flex align-items-center">Back</a>
+            <a href="{% url 'userdashboard' %}" class="btn-back">Back</a>
           </div>
         </form>
       </div>

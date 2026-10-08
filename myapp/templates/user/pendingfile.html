@@ -1,4 +1,6 @@
-{% extends 'user/userlayout.html' %} {% block user %}
+{% extends 'user/userlayout.html' %} 
+
+{% block user %}
 
 <style>
   .section-card {
@@ -14,6 +16,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   .btn-main {
@@ -23,33 +27,41 @@
     padding: 10px 20px;
     border-radius: 8px;
     font-weight: 600;
-    margin-top:-20px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .btn-main:hover {
+    background: #034a24;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(8, 112, 58, 0.25);
   }
 
   .table thead th {
-    background: #dfe6ef;
-    color: #08703a;
-    font-weight:0;
-    font-size:12px;
+    background: #dcfce7;
+    color: #047857;
+    font-size: 13px;
+    white-space: nowrap;
   }
-  .para{
-     color: #7c8aa8;
+
+  .para {
+    color: #7c8aa8;
   }
 </style>
 
-<div class="container-fluid mt-4 mb-4">
 <div class="container-fluid px-3 px-md-4 mt-4 mb-4">
   <h3 class="fw-bold">Pending Files</h3>
   <div class="section-card2">
-    <p class="para">Open file, track movement and take action</p>
-    <a href="{% url 'ur_upload_files' %}"  class="btn-main"> Create File </a>
-    <p class="para mb-0">Open file, track movement and take action</p>
-    <a href="{% url 'ur_upload_files' %}" class="btn-main"> Create File </a>
+    <p class="para mb-0">Files assigned to you that are pending action</p>
+    <a href="{% url 'ur_upload_files' %}" class="btn-main">
+      <i class="fa-solid fa-plus me-1"></i> Upload File
+    </a>
   </div>
 
   <div class="section-card">
     <div class="table-responsive">
-      <table class="table table-bordered align-middle">
+      <table class="table table-bordered align-middle mb-0">
         <thead class="text-center">
           <tr>
             <th>FILE NO</th>
@@ -58,7 +70,7 @@
             <th>CREATED BY</th>
             <th>CURRENT USER</th>
             <th>STATUS</th>
-            <th>DATE</th>
+            <th>TIME</th>
             <th>ACTION</th>
           </tr>
         </thead>
@@ -66,32 +78,30 @@
         <tbody class="text-center fs-6">
           {% for i in ab %}
           <tr>
-            <td>{{i.file_no}}</td>
-            <td>{{i.subject}}</td>
+            <td><strong>{{ i.file_no }}</strong></td>
+            <td>{{ i.subject }}</td>
             <td>
               {% if i.file %}
               <a href="{{ i.file.url }}" target="_blank" class="text-success fw-bold">
-                Click Here
+                <i class="fa-solid fa-paperclip me-1"></i> View
               </a>
               {% else %}
               <span class="text-muted">No File</span>
               {% endif %}
             </td>
-            <td>{{i.create_user}}</td>
-            <td>{{i.current_user}}</td>
-            <td>{{i.status}}</td>
-            <td>{{i.create_at}}</td>
+            <td>{{ i.create_user }}</td>
+            <td>{{ i.current_user }}</td>
+            <td><span class="badge bg-warning text-dark">{{ i.status }}</span></td>
+            <td>{{ i.create_at }}</td>
             <td>
-              <a href="{% url 'Details_file' i.file_no %}">
-                <button class="btn btn-success">Open</button>
+              <a href="{% url 'Details_file' i.file_no %}" class="btn btn-sm btn-success">
+                <i class="fa-solid fa-folder-open me-1"></i> Open & Act
               </a>
             </td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="8" class="text-center text-muted py-4">
-              <h6>No pending files found.</h6>
-            </td>
+            <td colspan="8" class="text-center text-muted py-4">No Pending Files Found</td>
           </tr>
           {% endfor %}
         </tbody>

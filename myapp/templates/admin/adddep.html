@@ -23,12 +23,10 @@
   }
 
   .form {
-    height: 50px;
-    width: 510px;
-    {% comment %} border: 1px solid black; {% endcomment %}
     height: 46px;
     width: 100%;
   }
+
   .btn-main {
     height: 44px;
     border: 0;
@@ -42,129 +40,135 @@
     align-items: center;
     justify-content: center;
   }
-  .btn-back{
+
+  .btn-back {
     border-radius: 9px;
     background: #e7f4ec;
     color: #1d4ed8;
     font-weight: 800;
     text-decoration: none;
-    padding: 8px 12px;
-  }
-
-  .dep{
-    overflow-y:scroll;
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
   }
 </style>
 
-<div class="container-fluid px-4 mb-5">
 <div class="container-fluid px-3 px-md-4 mb-5">
   <div class="row">
-    <div class="col-12 ">
     <div class="col-12">
       <h2 class="fw-bolder mt-4">Add Department</h2>
       <p class="text">Create or update department details</p>
     </div>
 
-    <div class="col-12 mt-2 dep">
     <div class="col-12 mt-2">
       <div class="section-card">
         <h4 class="fw-bolder mb-4">Department Information</h4>
+
         {% for i in messages %}
-        <div class="alert alert-success">{{ i }}</div>
+        <div class="alert {% if i.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show" role="alert">
+          {{ i }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         {% endfor %}
+
         <form action="{% url 'dep_save' %}" method="post">
           {% csrf_token %}
 
           <div class="row g-3">
-            <div class="col-sm-6">
             <div class="col-12 col-md-6">
-              <label for="Ename" class="fw-bold mb-2">Department Name</label>
+              <label for="Ename" class="fw-bold mb-2">Department Name <span class="text-danger">*</span></label>
               <input
                 type="text"
                 name="dep_name"
                 class="form-control form"
                 id="Ename"
+                placeholder="Enter Department Name"
+                required
               />
             </div>
 
-            <div class="col-sm-6">
             <div class="col-12 col-md-6">
-              <label for="Mname" class="fw-bold mb-2">Department Code</label>
+              <label for="Mname" class="fw-bold mb-2">Department Code <span class="text-danger">*</span></label>
               <input
                 type="text"
                 name="dep_code"
                 class="form-control form"
                 id="Mname"
+                placeholder="e.g. IT, HR, FIN"
+                required
               />
             </div>
-            <div class="col-sm-6">
+
             <div class="col-12 col-md-6">
-              <label for="priority" class="fw-bold mb-2">Department Head</label>
+              <label for="priority" class="fw-bold mb-2">Department Head <span class="text-danger">*</span></label>
               <input
                 type="text"
                 name="dep_head"
                 class="form-control form"
                 id="priority"
+                placeholder="Enter Department Head Name"
+                required
               />
             </div>
 
-            <div class="col-sm-6">
             <div class="col-12 col-md-6">
-              <label for="attach1" class="fw-bold mb-2">Status</label>
-              <select name="status" id="attach1" class="form-control form">
-                <option value="Admin">Admin</option>
-                <option value="User">User</option>
+              <label for="attach1" class="fw-bold mb-2">Status <span class="text-danger">*</span></label>
+              <select name="status" id="attach1" class="form-control form" required>
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
               </select>
             </div>
-            <div class="col-sm-6">
+
             <div class="col-12 col-md-6">
-              <label for="move" class="fw-bold mb-2">Department Email</label>
+              <label for="move" class="fw-bold mb-2">Department Email <span class="text-danger">*</span></label>
               <input
                 type="email"
                 name="dep_email"
                 class="form-control form"
                 id="move"
+                placeholder="department@ggl.com"
+                required
               />
             </div>
-            <div class="col-sm-6">
-              <label for="phot" class="fw-bold mb-2">Contact Number</label
-              ><br />
+
             <div class="col-12 col-md-6">
-              <label for="phot" class="fw-bold mb-2">Contact Number</label>
+              <label for="phot" class="fw-bold mb-2">Contact Number <span class="text-danger">*</span></label>
               <input
                 type="tel"
                 name="dep_number"
                 class="form-control form"
                 id="phot"
+                placeholder="10-digit contact number"
+                pattern="[0-9]{10}"
+                maxlength="10"
+                minlength="10"
+                required
               />
             </div>
-            <div class="col-sm-12">
+
             <div class="col-12">
-              <label for="text3" class="fw-bold mb-2">Description</label><br />
+              <label for="text3" class="fw-bold mb-2">Description</label>
               <textarea
                 name="description"
-                rows="4"
-                cols="129"
+                rows="3"
                 class="form-control"
                 id="text3"
+                placeholder="Enter department description or notes..."
               ></textarea>
             </div>
           </div>
-          <button type="submit" class="btn-main mt-4">
-            <i class="fa-solid fa-floppy-disk me-2"></i>Save Department
-          </button>
-          <a href="{% url 'managedep' %}" class="btn-back ms-2">Back</a>
+
           <div class="d-flex flex-wrap gap-2 mt-4">
             <button type="submit" class="btn-main">
               <i class="fa-solid fa-floppy-disk me-2"></i>Save Department
             </button>
-            <a href="{% url 'managedep' %}" class="btn-back d-inline-flex align-items-center">Back</a>
+            <a href="{% url 'managedep' %}" class="btn-back">Back</a>
           </div>
         </form>
-        {% endblock %}
       </div>
     </div>
   </div>
 </div>
+
+{% endblock %}

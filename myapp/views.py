@@ -19,9 +19,14 @@ def Adminlogin(request):
 
 def loginsave(request):
     if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
         remember = request.POST.get('remember')
+
+        if not username or not password:
+            messages.error(request, 'Please enter both username and password.')
+            return redirect('adminlogin')
+
         user = login.objects.filter(username=username, password=password).first()
         if user:
             if user.role and (user.role.lower() == 'admin'):
@@ -44,12 +49,16 @@ def loginsave(request):
 
 def admin_forgot_password(request):
     if request.method == "POST":
-        username = request.POST.get('username')
-        new_password = request.POST.get('new_password')
-        confirm_password = request.POST.get('confirm_password')
+        username = request.POST.get('username', '').strip()
+        new_password = request.POST.get('new_password', '').strip()
+        confirm_password = request.POST.get('confirm_password', '').strip()
 
-        if not username or not new_password:
+        if not username or not new_password or not confirm_password:
             messages.error(request, "Please fill in all required fields.")
+            return render(request, 'admin/admin_forgot_password.html')
+
+        if len(new_password) < 4:
+            messages.error(request, "Password must be at least 4 characters long.")
             return render(request, 'admin/admin_forgot_password.html')
 
         if new_password != confirm_password:
@@ -91,12 +100,16 @@ def dashboard(request):
         'total_files': fileupload.objects.count(),
         'received_files': fileupload.objects.filter(Q(status__iexact='Forwarded') | Q(status__iexact='Received')).count(),
         'pending_files': fileupload.objects.filter(status__iexact='Pending').count(),
-        'closed_files': fileupload.objects.filter(status__iexact='Close').count(),
-        'rejected_files': fileupload.objects.filter(status__iexact='Reject').count(),
+        'closed_files': fileupload.objects.filter(status__iexact='Close') | fileupload.objects.filter(status__iexact='Closed'),
+        'closed_count': fileupload.objects.filter(Q(status__iexact='Close') | Q(status__iexact='Closed')).count(),
+        'rejected_files': fileupload.objects.filter(status__iexact='Reject') | fileupload.objects.filter(status__iexact='Rejected'),
+        'rejected_count': fileupload.objects.filter(Q(status__iexact='Reject') | Q(status__iexact='Rejected')).count(),
         'employees': addemp.objects.count(),
         'departments': adddepartment.objects.count(),
         'recent': recent,
     }
+    context['closed_files'] = context['closed_count']
+    context['rejected_files'] = context['rejected_count']
     return render(request, 'admin/dashboard.html', context)
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -115,35 +128,40 @@ def adddep(request):
 def dep_save(request):
     if 'adminid' not in request.session:
         return redirect('adminlogin')
+
     if request.method == "POST":
-        dep_name = request.POST.get('dep_name')
-        dep_code = request.POST.get('dep_code')
-        dep_head = request.POST.get('dep_head')
-        status = request.POST.get('status')
-        dep_email = request.POST.get('dep_email')
-        dep_number = request.POST.get('dep_number')
+        dep_name = request.POST.get('dep_name', '').strip()
+        dep_code = request.POST.get('dep_code', '').strip()
+        dep_head = request.POST.get('dep_head', '').strip()
+        status = request.POST.get('status', 'Active').strip()
+        dep_email = request.POST.get('dep_email', '').strip()
+        dep_number = request.POST.get('dep_number', '').strip()
+
+        if not dep_name or not dep_code or not dep_head or not dep_email or not dep_number:
+            messages.error(request, "Please fill in all required department fields.")
+            return redirect('adddep')
+
+        if len(dep_number) != 10 or not dep_number.isdigit():
+            messages.error(request, "Contact number must be exactly 10 digits.")
+            return redirect('adddep')
+
+        if adddepartment.objects.filter(Q(dep_name__iexact=dep_name) | Q(dep_code__iexact=dep_code) | Q(dep_email__iexact=dep_email)).exists():
+            messages.error(request, "A department with this Name, Code, or Email already exists.")
+            return redirect('adddep')
+
         create_at = timezone.now().time()
-        av = adddepartment.objects.filter(
+        adddepartment.objects.create(
             dep_name=dep_name,
             dep_code=dep_code,
-            dep_email=dep_email
+            dep_head=dep_head,
+            status=status,
+            dep_email=dep_email,
+            dep_number=dep_number,
+            create_at=create_at
         )
-        if av.exists():
-            messages.error(request, "This department already exists")
-            return redirect('adddep')
-        else:
-            ab = adddepartment(
-                dep_name=dep_name,
-                dep_code=dep_code,
-                dep_head=dep_head,
-                status=status,
-                dep_email=dep_email,
-                dep_number=dep_number,
-                create_at=create_at
-            )
-            ab.save()
-            messages.success(request, 'Add Department Successfully')
-            return redirect('adddep')
+        messages.success(request, 'Add Department Successfully')
+        return redirect('adddep')
+
     return redirect('adddep')
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -164,39 +182,70 @@ def managedep(request):
 def empadd(request):
     if 'adminid' not in request.session:
         return redirect('adminlogin')
+
     dp = adddepartment.objects.all()
+
     if request.method == "POST":
-        username = request.POST.get('username')
-        emp_id = request.POST.get('emp_id')
-        name = request.POST.get('name')
-        password = request.POST.get('password')
-        role = request.POST.get('role')
+        name = request.POST.get('name', '').strip()
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        mobile = request.POST.get('mobile', '').strip()
+        emp_id = request.POST.get('emp_id', '').strip()
+        department = request.POST.get('department', '').strip()
+        disignation = request.POST.get('disignation', '').strip()
+        role = request.POST.get('role', '').strip()
+        status = request.POST.get('status', 'Active').strip()
+        password = request.POST.get('password', '').strip()
+        photo = request.FILES.get('photo')
+        address = request.POST.get('address', '').strip()
 
-        login.objects.filter(username=username).delete()
-        sv = login(username=username, password=password, role=role)
-        sv.save()
+        # Validation Checks
+        if not name or not username or not email or not mobile or not emp_id or not department or not disignation or not role or not password:
+            messages.error(request, "Please fill in all required fields.")
+            return redirect('empadd')
 
-        av = addemp.objects.filter(username=username, emp_id=emp_id)
-        if av.exists():
-            messages.error(request, "This employee already exists.")
-        else:
-            addemp.objects.create(
-                name=request.POST.get('name'),
-                username=username,
-                email=request.POST.get('email'),
-                mobile=request.POST.get('mobile'),
-                emp_id=emp_id,
-                department=request.POST.get('department'),
-                disignation=request.POST.get('disignation'),
-                role=role,
-                status=request.POST.get('status'),
-                password=password,
-                photo=request.FILES.get('photo'),
-                address=request.POST.get('address')
-            )
-            messages.success(request, 'Add Employee Successfully')
+        if len(name) < 2:
+            messages.error(request, "Please enter a valid full name.")
+            return redirect('empadd')
 
-            message = f"""Dear {name},
+        if len(mobile) != 10 or not mobile.isdigit():
+            messages.error(request, "Mobile number must be a valid 10-digit number.")
+            return redirect('empadd')
+
+        if len(password) < 4:
+            messages.error(request, "Password must be at least 4 characters long.")
+            return redirect('empadd')
+
+        if addemp.objects.filter(Q(username__iexact=username) | Q(email__iexact=email) | Q(emp_id__iexact=emp_id)).exists():
+            messages.error(request, "An employee with this Username, Email or Employee ID already exists.")
+            return redirect('empadd')
+
+        if login.objects.filter(username__iexact=username).exists():
+            messages.error(request, "This username/email is already registered in the login system.")
+            return redirect('empadd')
+
+        # Save credentials to login model
+        login.objects.create(username=username, password=password, role=role)
+
+        # Save employee details to addemp model
+        addemp.objects.create(
+            name=name,
+            username=username,
+            email=email,
+            mobile=mobile,
+            emp_id=emp_id,
+            department=department,
+            disignation=disignation,
+            role=role,
+            status=status,
+            password=password,
+            photo=photo,
+            address=address
+        )
+        messages.success(request, 'Add Employee Successfully')
+
+        # Send credentials email to employee
+        message = f"""Dear {name},
 
 Greetings from Green Gas Limited (GGL).
 
@@ -204,21 +253,22 @@ Your account has been successfully created for the GGL File Tracking System.
 
 User ID / Email : {username}
 Password        : {password}
+Role            : {role}
 
 Regards,
 System Administrator
 Green Gas Limited (GGL)"""
 
-            try:
-                send_mail(
-                    "GGL File Tracking System - Login Credentials",
-                    message,
-                    settings.EMAIL_HOST_USER,
-                    [username],
-                    fail_silently=True,
-                )
-            except Exception:
-                pass
+        try:
+            send_mail(
+                "GGL File Tracking System - Login Credentials",
+                message,
+                settings.EMAIL_HOST_USER,
+                [username],
+                fail_silently=True,
+            )
+        except Exception:
+            pass
 
         return redirect('empadd')
 
@@ -248,9 +298,22 @@ def createfile(request):
     em = addemp.objects.all()
 
     if request.method == "POST":
-        custom_file_no = request.POST.get('file_no')
-        if custom_file_no and custom_file_no.strip():
-            file_no = custom_file_no.strip()
+        subject = request.POST.get('subject', '').strip()
+        priority = request.POST.get('priority', 'Medium').strip()
+        department = request.POST.get('department', '').strip()
+        current_user = request.POST.get('current_user', '').strip()
+        description = request.POST.get('description', '').strip()
+        custom_file_no = request.POST.get('file_no', '').strip()
+
+        if not subject or not priority or not department or not current_user:
+            messages.error(request, "Please fill in all required file details (Subject, Priority, Department, Assign User).")
+            return redirect('createfile')
+
+        if custom_file_no:
+            if fileupload.objects.filter(file_no__iexact=custom_file_no).exists():
+                messages.error(request, f"File number {custom_file_no} already exists. Please choose a different number.")
+                return redirect('createfile')
+            file_no = custom_file_no
         else:
             all_files = fileupload.objects.all()
             max_num = 0
@@ -262,8 +325,6 @@ def createfile(request):
                         max_num = num
             file_no = f"FIL{max_num + 1:03d}"
 
-        current_user = request.POST.get('current_user')
-        description = request.POST.get('description')
         status = "Forwarded"
         create_at = timezone.now().date()
 
@@ -279,10 +340,10 @@ def createfile(request):
 
         fileupload.objects.create(
             file_no=file_no,
-            subject=request.POST.get('subject'),
+            subject=subject,
             create_user=adminid,
-            priority=request.POST.get('priority'),
-            department=request.POST.get('department'),
+            priority=priority,
+            department=department,
             current_user=current_user,
             file=request.FILES.get('file'),
             description=description,
@@ -331,7 +392,7 @@ def filetrack(request):
     if 'adminid' not in request.session:
         return redirect('adminlogin')
 
-    search = request.GET.get('search')
+    search = request.GET.get('search', '').strip()
     ab = fileupload.objects.all()
     if search:
         ab = ab.filter(
@@ -358,12 +419,20 @@ def ad_Details_file(request, file_no):
         return redirect('allfile')
 
     if request.method == "POST":
-        action = request.POST.get('action')
-        forwarded_user = request.POST.get('forwarded_user')
-        remark = request.POST.get('remark')
+        action = request.POST.get('action', '').strip()
+        forwarded_user = request.POST.get('forwarded_user', '').strip()
+        remark = request.POST.get('remark', '').strip()
         create_at = timezone.now().date()
 
-        if action and (action.lower() in ['close', 'closed']):
+        if not action:
+            messages.error(request, "Please select an action.")
+            return redirect('ad_Details_file', file_no=file_no)
+
+        if action.lower() in ['forward', 'forwarded'] and not forwarded_user:
+            messages.error(request, "Please select a user to forward the file.")
+            return redirect('ad_Details_file', file_no=file_no)
+
+        if action.lower() in ['close', 'closed']:
             ab.status = 'Closed'
             ab.current_user = sn
         else:
@@ -397,10 +466,19 @@ def edit_file(request, file_no):
         return redirect('sentfiles')
 
     if request.method == "POST":
-        obj.subject = request.POST.get('subject')
-        obj.priority = request.POST.get('priority')
-        obj.department = request.POST.get('department')
-        obj.description = request.POST.get('description')
+        subject = request.POST.get('subject', '').strip()
+        priority = request.POST.get('priority', '').strip()
+        department = request.POST.get('department', '').strip()
+        description = request.POST.get('description', '').strip()
+
+        if not subject or not priority or not department:
+            messages.error(request, "Subject, Priority, and Department cannot be empty.")
+            return render(request, 'admin/editfile.html', {'obj': obj})
+
+        obj.subject = subject
+        obj.priority = priority
+        obj.department = department
+        obj.description = description
         if request.FILES.get('file'):
             obj.file = request.FILES.get('file')
         obj.save()
@@ -428,10 +506,15 @@ def userlogin(request):
 
 def userlogcode(request):
     if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
         remember = request.POST.get('remember')
-        user = addemp.objects.filter(username=username, password=password).first()
+
+        if not username or not password:
+            messages.error(request, "Please enter both username and password.")
+            return redirect('userlogin')
+
+        user = addemp.objects.filter(Q(username=username) | Q(email=username), password=password).first()
         if user:
             if user.status and user.status.lower() == "active":
                 request.session['userid'] = user.username
@@ -446,7 +529,7 @@ def userlogcode(request):
                     response.delete_cookie('remember_user')
                 return response
             else:
-                messages.error(request, "Your account is inactive.")
+                messages.error(request, "Your account is inactive. Please contact administrator.")
                 return redirect('userlogin')
         messages.error(request, "Invalid Username or Password")
         return redirect('userlogin')
@@ -454,12 +537,16 @@ def userlogcode(request):
 
 def forgot_password(request):
     if request.method == "POST":
-        username = request.POST.get('username')
-        new_password = request.POST.get('new_password')
-        confirm_password = request.POST.get('confirm_password')
+        username = request.POST.get('username', '').strip()
+        new_password = request.POST.get('new_password', '').strip()
+        confirm_password = request.POST.get('confirm_password', '').strip()
 
-        if not username or not new_password:
+        if not username or not new_password or not confirm_password:
             messages.error(request, "Please fill in all required fields.")
+            return render(request, 'user/forgot_password.html')
+
+        if len(new_password) < 4:
+            messages.error(request, "Password must be at least 4 characters long.")
             return render(request, 'user/forgot_password.html')
 
         if new_password != confirm_password:
@@ -538,9 +625,22 @@ def ur_upload_files(request):
     em = addemp.objects.all()
 
     if request.method == "POST":
-        custom_file_no = request.POST.get('file_no')
-        if custom_file_no and custom_file_no.strip():
-            file_no = custom_file_no.strip()
+        subject = request.POST.get('subject', '').strip()
+        priority = request.POST.get('priority', 'Medium').strip()
+        department = request.POST.get('department', '').strip()
+        current_user = request.POST.get('current_user', '').strip()
+        description = request.POST.get('description', '').strip()
+        custom_file_no = request.POST.get('file_no', '').strip()
+
+        if not subject or not priority or not department or not current_user:
+            messages.error(request, "Please fill in all required file details (Subject, Priority, Department, Assign User).")
+            return redirect('ur_upload_files')
+
+        if custom_file_no:
+            if fileupload.objects.filter(file_no__iexact=custom_file_no).exists():
+                messages.error(request, f"File number {custom_file_no} already exists. Please choose a different number.")
+                return redirect('ur_upload_files')
+            file_no = custom_file_no
         else:
             all_files = fileupload.objects.all()
             max_num = 0
@@ -552,8 +652,6 @@ def ur_upload_files(request):
                         max_num = num
             file_no = f"FIL{max_num + 1:03d}"
 
-        current_user = request.POST.get('current_user')
-        description = request.POST.get('description')
         status = "Forwarded"
         create_at = timezone.now().date()
 
@@ -569,10 +667,10 @@ def ur_upload_files(request):
 
         fileupload.objects.create(
             file_no=file_no,
-            subject=request.POST.get('subject'),
+            subject=subject,
             create_user=userid,
-            priority=request.POST.get('priority'),
-            department=request.POST.get('department'),
+            priority=priority,
+            department=department,
             current_user=current_user,
             file=request.FILES.get('file'),
             description=description,
@@ -623,7 +721,7 @@ def trackfile(request):
     if 'userid' not in request.session:
         return redirect('userlogin')
 
-    search = request.GET.get('search')
+    search = request.GET.get('search', '').strip()
     ab = fileupload.objects.all()
     if search:
         ab = ab.filter(
@@ -652,12 +750,20 @@ def Details_file(request, file_no):
     can_close = (ab.create_user == sn)
 
     if request.method == "POST":
-        action = request.POST.get('action')
-        forwarded_user = request.POST.get('forwarded_user')
-        remark = request.POST.get('remark')
+        action = request.POST.get('action', '').strip()
+        forwarded_user = request.POST.get('forwarded_user', '').strip()
+        remark = request.POST.get('remark', '').strip()
         create_at = timezone.now().date()
 
-        if action and (action.lower() in ['close', 'closed']):
+        if not action:
+            messages.error(request, "Please select an action.")
+            return redirect('Details_file', file_no=file_no)
+
+        if action.lower() in ['forward', 'forwarded'] and not forwarded_user:
+            messages.error(request, "Please select a user to forward the file.")
+            return redirect('Details_file', file_no=file_no)
+
+        if action.lower() in ['close', 'closed']:
             if not can_close:
                 messages.error(request, "Only the creator of this file or Admin can close it.")
                 return redirect('Details_file', file_no=file_no)
@@ -690,7 +796,3 @@ def us_showfile(request):
     sid = request.session.get('userid')
     ab = fileupload.objects.filter(current_user=sid)
     return render(request, 'user/us_showfile.html', {'ab': ab})
-
-
-    
-        
