@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Green Gas Limited | File Tracking System</title>
+    <link rel="icon" type="image/png" href="https://gglengage.com/images/ggllogo.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background: #eef4ff;
+        overflow-x: hidden;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      /* Sidebar Styling */
+      .sidebar {
+        background: #fff;
+      }
+
+      @media (min-width: 992px) {
+        .sidebar {
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          overflow-y: auto;
+          display: block !important;
+          z-index: 1020;
+        }
+      }
+
+      @media (max-width: 991.98px) {
+        .sidebar {
+          width: 280px !important;
+          max-width: 85vw !important;
+          height: 100vh !important;
+          overflow-y: auto;
+          z-index: 1050;
+        }
+      }
+
+      .box1 {
+        background: linear-gradient(135deg, #1d4ed8, #102f76);
+        padding: 22px 20px;
+        color: #fff;
+      }
+
+      .box1 img {
+        width: 86px;
+        background: #fff;
+        padding: 6px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+      }
+
+      .box1 h5 {
+        font-weight: 900;
+        margin: 0;
+        font-size: 1.15rem;
+      }
+
+      .box1 small {
+        opacity: 0.85;
+      }
+
+      .box2 {
+        padding: 14px 12px;
+        background-color: #fff;
+      }
+
+      .menu-title {
+        font-size: 11px;
+        text-transform: uppercase;
+        font-weight: 900;
+        color: #7c8aa8;
+        margin: 14px 10px 8px;
+        letter-spacing: 0.5px;
+      }
+
+      .box2 a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 11px 14px;
+        text-decoration: none;
+        color: #21365f;
+        border-radius: 10px;
+        margin-bottom: 4px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+      }
+
+      .box2 a:hover {
+        background-color: #eff6ff;
+        color: #1d4ed8;
+        transform: translateX(4px);
+      }
+
+      .box2 a i {
+        width: 20px;
+        color: #1d4ed8;
+        font-size: 15px;
+        transition: transform 0.2s ease;
+      }
+
+      .box2 a:hover i {
+        transform: scale(1.15);
+      }
+
+      /* Main Content & Topbar */
+      .s {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .topbar {
+        background: linear-gradient(135deg, #1d4ed8, #102f76);
+        position: sticky;
+        top: 0;
+        z-index: 1030;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+        padding: 12px 18px;
+      }
+
+      .hamburger-btn {
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #fff;
+        border-radius: 8px;
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .hamburger-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .topbar-title {
+        font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+        margin: 0;
+      }
+
+      .avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #fff;
+        color: #1d4ed8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 15px;
+      }
+
+      .office {
+        color: #bfdbfe;
+      }
+
+      /* Responsive Helpers */
+      .btn, .btn-main, .main, .main2, .btn-back {
+        transition: all 0.2s ease-in-out;
+      }
+
+      .btn-main:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(29, 78, 216, 0.35);
+      }
+
+      .btn-back:hover {
+        background: #dbeafe;
+        color: #1e40af;
+        transform: translateY(-1px);
+      }
+
+      .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      table.table tbody tr:hover {
+        background-color: #f1f5f9;
+      }
+
+      @media (max-width: 991.98px) {
+        .section-card, .section-card3 {
+          padding: 16px 14px !important;
+          border-radius: 14px !important;
+        }
+        .section-card2 {
+          flex-direction: column !important;
+          align-items: stretch !important;
+          gap: 10px !important;
+          margin-bottom: 14px !important;
+        }
+        .btn-main {
+          margin-top: 0 !important;
+          width: 100% !important;
+          text-align: center !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-fluid p-0">
+      <div class="row g-0">
+        <!-- Sidebar with Bootstrap 5.3 offcanvas-lg (Hidden in hamburger drawer on mobile/tablet) -->
+        <div
+          class="col-lg-2 offcanvas-lg offcanvas-start sidebar p-0"
+          tabindex="-1"
+          id="adminSidebar"
+          aria-labelledby="adminSidebarLabel"
+        >
+          <div class="box1 d-flex justify-content-between align-items-center d-lg-block">
+            <div>
+              <img src="https://gglengage.com/images/ggllogo.png" alt="GGL Logo" />
+              <h5 id="adminSidebarLabel">GGL Admin</h5>
+              <small>Administration Dashboard</small>
+            </div>
+            <button
+              type="button"
+              class="btn-close btn-close-white d-lg-none"
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#adminSidebar"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="box2">
+            <div class="menu-title">Main</div>
+
+            <a href="{% url 'dashboard' %}">
+              <i class="fa-solid fa-gauge-high"></i>
+              Admin Dashboard
+            </a>
+
+            <div class="menu-title">File Management</div>
+
+            <a href="{% url 'createfile' %}">
+              <i class="fa-solid fa-file-circle-plus"></i>
+              Create File
+            </a>
+
+            <a href="{% url 'receivedfile' %}">
+              <i class="fa-solid fa-clipboard"></i>
+              Received Files
+            </a>
+
+            <a href="{% url 'sentfiles' %}">
+              <i class="fa-solid fa-paper-plane"></i>
+              Sent Files
+            </a>
+
+            <a href="{% url 'pendingfiles' %}">
+              <i class="fa-solid fa-clock"></i>
+              Pending Files
+            </a>
+
+            <a href="{% url 'allfile' %}">
+              <i class="fa-solid fa-folder-open"></i>
+              All Files
+            </a>
+
+            <a href="{% url 'filetrack' %}">
+              <i class="fa-solid fa-magnifying-glass-location"></i>
+              File Track
+            </a>
+
+            <div class="menu-title">Administration</div>
+
+            <a href="{% url 'empadd' %}">
+              <i class="fa-solid fa-user-plus"></i>
+              Add Employee
+            </a>
+
+            <a href="{% url 'manageemp' %}">
+              <i class="fa-solid fa-users"></i>
+              Manage Employees
+            </a>
+
+            <a href="{% url 'adddep' %}">
+              <i class="fa-solid fa-building"></i>
+              Add Department
+            </a>
+
+            <a href="{% url 'managedep' %}">
+              <i class="fa-solid fa-building-user"></i>
+              Manage Departments
+            </a>
+
+            <div class="menu-title">Account</div>
+
+            <a href="{% url 'adminlogout' %}">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              Logout
+            </a>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-12 col-lg-10 s p-0">
+          <div class="topbar d-flex align-items-center justify-content-between">
+            <!-- Left: Hamburger Button + Title -->
+            <div class="d-flex align-items-center gap-2">
+              <button
+                class="hamburger-btn d-lg-none"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#adminSidebar"
+                aria-controls="adminSidebar"
+                aria-label="Toggle navigation"
+              >
+                <i class="fa-solid fa-bars"></i>
+              </button>
+              <h2 class="text-white fw-bolder topbar-title">Admin Panel</h2>
+            </div>
+
+            <!-- Right: Admin Info & Avatar -->
+            <div class="d-flex align-items-center">
+              <div class="text-end me-2 me-md-3">
+                <h6 class="office mb-0 fw-bolder d-none d-sm-block">GGL Head Office</h6>
+                <small class="admin-text fw-bold text-white">Administrator</small>
+              </div>
+              <div class="avatar">G</div>
+            </div>
+          </div>
+
+          <div class="flex-grow-1">
+            {% block admin %}
+
+            {% endblock %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

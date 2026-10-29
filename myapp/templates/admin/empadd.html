@@ -1,0 +1,232 @@
+{% extends 'admin/adminlayout.html' %} 
+
+{% block admin %}
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .text {
+    color: #7c8aa8;
+  }
+
+  .section-card {
+    background: #fff;
+    border: 1px solid #dbe7df;
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: 0 16px 36px rgba(8, 112, 58, 0.07);
+  }
+
+  .form {
+    height: 46px;
+    width: 100%;
+  }
+
+  .btn-main {
+    height: 44px;
+    border: 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1d4ed8, #102f76);
+    color: #fff;
+    font-weight: 800;
+    padding: 0 18px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-back {
+    border-radius: 9px;
+    background: #e7f4ec;
+    color: #1d4ed8;
+    font-weight: 800;
+    text-decoration: none;
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+  }
+</style>
+
+<div class="container-fluid px-3 px-md-4 mb-5">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="fw-bolder mt-4">Add Employee</h2>
+      <p class="text">
+        Add or update employee details. Role is static: Admin or User.
+      </p>
+    </div>
+
+    <div class="col-12 mt-2">
+      <div class="section-card">
+        <h4 class="fw-bolder mb-4">Employee Information</h4>
+
+        {% for i in messages %}
+        <div class="alert {% if i.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show" role="alert">
+          {{ i }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <label for="Ename" class="fw-bold mb-2">Full Name <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                name="name"
+                class="form-control form"
+                id="Ename"
+                placeholder="Enter Full Name"
+                required
+              />
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="Mname" class="fw-bold mb-2">Username / Login Email <span class="text-danger">*</span></label>
+              <input
+                type="email"
+                name="username"
+                class="form-control form"
+                id="Mname"
+                placeholder="user@gmail.com"
+                required
+              />
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="priority" class="fw-bold mb-2">Email Address <span class="text-danger">*</span></label>
+              <input
+                type="email"
+                name="email"
+                class="form-control form"
+                id="priority"
+                placeholder="Enter email address"
+                required
+              />
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="Dname" class="fw-bold mb-2">Mobile Number <span class="text-danger">*</span></label>
+              <input
+                type="tel"
+                name="mobile"
+                class="form-control form"
+                id="Dname"
+                placeholder="10-digit mobile number"
+                pattern="[0-9]{10}"
+                maxlength="10"
+                minlength="10"
+                required
+              />
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="move" class="fw-bold mb-2">Employee ID <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                name="emp_id"
+                class="form-control form"
+                id="move"
+                placeholder="e.g. EMP001"
+                required
+              />
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="attach" class="fw-bold mb-2">Department <span class="text-danger">*</span></label>
+              <select name="department" id="attach" class="form-control form" required>
+                <option value="">-- Select Department --</option>
+                {% for d in dp %}
+                <option value="{{ d.dep_name }}">{{ d.dep_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="move1" class="fw-bold mb-2">Designation <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                name="disignation"
+                class="form-control form"
+                id="move1"
+                placeholder="e.g. Manager / Officer"
+                required
+              />
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="attach1" class="fw-bold mb-2">Static Role <span class="text-danger">*</span></label>
+              <select name="role" id="attach1" class="form-control form" required>
+                <option value="">-- Select Role --</option>
+                <option value="Admin">Admin</option>
+                <option value="User">User</option>
+              </select>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="attach2" class="fw-bold mb-2">Status <span class="text-danger">*</span></label>
+              <select name="status" id="attach2" class="form-control form" required>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="move3" class="fw-bold mb-2">Password <span class="text-danger">*</span></label>
+              <input
+                type="password"
+                name="password"
+                class="form-control form"
+                id="move3"
+                placeholder="Enter password"
+                minlength="4"
+                maxlength="16"
+                required
+              />
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="phot" class="fw-bold mb-2">Photo</label>
+              <input
+                type="file"
+                name="photo"
+                class="form-control form"
+                id="phot"
+                accept="image/*"
+              />
+            </div>
+
+            <div class="col-12">
+              <label for="text3" class="fw-bold mb-2">Address</label>
+              <textarea
+                name="address"
+                rows="3"
+                class="form-control"
+                id="text3"
+                placeholder="Enter address details..."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-4">
+            <button type="submit" class="btn-main">
+              <i class="fa-solid fa-floppy-disk me-2"></i>Save Employee
+            </button>
+            <a href="{% url 'manageemp' %}" class="btn-back">Back</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
